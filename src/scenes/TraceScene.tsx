@@ -153,22 +153,30 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
         const st = stateRef.current;
         const tol = toleranceForDifficulty(difficulty);
         const res = scoreStroke(all, stroke, tol);
+        if (res.accidental) { ink.undo(); return; } // graze/tap — not an attempt
         if (res.pass) {
           advance();
         } else {
           st.misses += 1;
           onMiss();
           ink.undo();
-          if (st.misses >= 2) {
-            // §8: assisted accept — replay hint, take whatever she draws next...
-            // actually: accept now and move on, with encouragement.
+          // She keeps trying — no quick auto-accept. Help escalates with each
+          // miss; only after 4 real attempts do we accept assisted (§8: never
+          // hard-fail, but never breeze past her either).
+          if (st.misses >= 4) {
             st.assisted = true;
             speak('Good trying! Watch the dot, and off we go!');
             playSfx('good');
             advance();
           } else {
             playSfx('oops');
-            speak(res.directionOk ? 'Almost! Start at the green dot.' : stroke.hint);
+            if (st.misses === 1) {
+              speak(res.directionOk ? 'Almost! Start at the green dot.' : stroke.hint);
+            } else if (st.misses === 2) {
+              speak(`Watch the little red dot. ${stroke.hint}`);
+            } else {
+              speak('Try one more time! Follow the dot with your finger.');
+            }
           }
         }
       },

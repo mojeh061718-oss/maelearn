@@ -13,7 +13,7 @@ import lameenc
 from piper import PiperVoice, SynthesisConfig
 
 MANIFEST, OUTDIR = sys.argv[1], sys.argv[2]
-MODEL = os.environ.get("PIPER_MODEL", "tools/voices/amy.onnx")
+MODEL = os.environ.get("PIPER_MODEL", "tools/voices/hfc.onnx")
 
 voice = PiperVoice.load(MODEL)
 items = json.load(open(MANIFEST))
@@ -27,7 +27,7 @@ for it in items:
         continue
     tmp = "/tmp/_line.wav"
     with wave.open(tmp, "wb") as w:
-        voice.synthesize_wav(it["t"], w, syn_config=SynthesisConfig(length_scale=1.05))
+        voice.synthesize_wav(it["t"], w, syn_config=SynthesisConfig(length_scale=0.98))
     with wave.open(tmp, "rb") as w:
         rate, nch, frames = w.getframerate(), w.getnchannels(), w.readframes(w.getnframes())
     enc = lameenc.Encoder()

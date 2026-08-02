@@ -80,3 +80,23 @@ here with rationale.
 - **Directions:** every activity now opens with an instruction overlay (icon +
   text + voice) and a persistent 🔊 replay button; the GO tap doubles as the
   iOS audio-unlock gesture.
+
+## Revision 3 — response to second device feedback
+
+- **Tracing rigor:** added a precision axis to scoring (≥60% of user samples
+  must stay near the path) so area-covering scribbles no longer pass; assisted
+  accept moved from 2 misses to 4, with escalating spoken help between;
+  accidental grazes/taps no longer count as attempts.
+- **Voice:** re-synthesized all 470 clips with Piper en_US-hfc_female-medium
+  (natural pace, length_scale 0.98) replacing amy-medium (which read as
+  robotic/slow on device).
+- **Backgrounds:** six full-bleed illustrated scenes (meadow/forest/desert/
+  castle/park/peaks) rendered at 2x from Kenney's vector source (crisp on
+  retina), saturation-boosted; per-area scene assignment; activities get a
+  dimmed variant for focus.
+- **Dead space:** Home fills the frame (mascot + Play hero, 4×2 area panel,
+  decorative animal row on the ground); area lists center a larger card grid
+  vertically with per-area card tints and a peeking animal; path screen gained
+  a dashed trail connecting stones.
+- **Cards:** gradient faces, white borders, warmer shadows; single-character
+  (letter/number) faces render in a rainbow palette in Fredoka.

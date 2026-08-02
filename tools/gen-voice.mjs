@@ -43,6 +43,7 @@ const add = (t) => { if (t && typeof t === 'string') lines.add(t.trim().replace(
   'You saw it!',
   'Look again!',
   'Good trying! Watch the dot, and off we go!',
+  'Try one more time! Follow the dot with your finger.',
   'Almost! Start at the green dot.',
   'You wrote Maelie!',
   "That's right!",
@@ -66,7 +67,7 @@ for (const g of Object.values(glyphs)) {
   add(g.label);
   add(`Trace ${g.label}! ${g.strokes[0].hint}`);
   add(`Now trace ${g.label}! ${g.strokes[0].hint}`);
-  for (const s of g.strokes) add(s.hint);
+  for (const s of g.strokes) { add(s.hint); add(`Watch the little red dot. ${s.hint}`); }
 }
 
 // shapes

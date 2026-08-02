@@ -5,6 +5,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { playSfx } from '../core/audio';
 import { burstAtElement } from './juice';
 
+/** Rainbow palette for single-character (letter/number) card faces. */
+const CHAR_COLORS = ['#E4572E', '#F3A712', '#2E933C', '#2274A5', '#7B4FD0', '#D64570'];
+export function charColor(ch: string): string {
+  return CHAR_COLORS[(ch.charCodeAt(0) + ch.length) % CHAR_COLORS.length];
+}
+const isChar = (s: string): boolean => /^[A-Z0-9]$/i.test(s);
+
 export function BigButton(props: {
   icon: string;
   label?: string;
@@ -19,6 +26,7 @@ export function BigButton(props: {
   const { icon, label, onPress, color = '#FFFFFF', size = 110, fontScale = 0.45, disabled, style } = props;
   const ref = useRef<HTMLButtonElement>(null);
   const s = Math.max(88, size);
+  const charFace = isChar(icon);
   return (
     <button
       ref={ref}
@@ -33,10 +41,10 @@ export function BigButton(props: {
       style={{
         minWidth: `calc(${s} * var(--lu))`,
         minHeight: `calc(${s} * var(--lu))`,
-        border: 'none',
-        borderRadius: `calc(24 * var(--lu))`,
-        background: color,
-        boxShadow: '0 calc(5 * var(--lu)) 0 rgba(0,0,0,0.15)', // §9: contour/shadow marks tappable
+        border: 'calc(5 * var(--lu)) solid rgba(255,255,255,0.95)',
+        borderRadius: `calc(26 * var(--lu))`,
+        background: `linear-gradient(170deg, #FFFFFF 0%, ${color} 85%)`,
+        boxShadow: '0 calc(6 * var(--lu)) 0 rgba(120,90,40,0.22), 0 calc(2 * var(--lu)) calc(10 * var(--lu)) rgba(0,0,0,0.08)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -54,9 +62,16 @@ export function BigButton(props: {
       onPointerEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)'; }}
       onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
     >
-      <span style={{ lineHeight: 1 }}>{icon}</span>
+      <span style={{
+        lineHeight: 1,
+        ...(charFace ? { fontWeight: 700, color: charColor(icon), fontSize: `calc(${s * 0.52} * var(--lu))`, textShadow: '0 2px 0 rgba(0,0,0,0.08)' } : {}),
+      }}>{icon}</span>
       {label && (
-        <span style={{ fontSize: `calc(22 * var(--lu))`, fontWeight: 700, color: '#444' }}>{label}</span>
+        <span style={{
+          fontSize: `calc(21 * var(--lu))`, fontWeight: 700, color: '#4A4459',
+          background: 'rgba(255,255,255,0.85)', borderRadius: 'calc(12 * var(--lu))',
+          padding: 'calc(2 * var(--lu)) calc(10 * var(--lu))',
+        }}>{label}</span>
       )}
     </button>
   );

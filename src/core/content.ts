@@ -57,12 +57,12 @@ export async function loadContent(): Promise<ContentBundle> {
 const isGame = (a: Activity): boolean => a.sceneType === 'pop' || a.sceneType === 'feed';
 
 /** Groups for the home map — literal, single-word labels (§9). */
-export const AREAS: { id: string; label: string; icon: string; color: string; match: (a: Activity) => boolean }[] = [
-  { id: 'letters',  label: 'Letters',  icon: '🔤', color: '#FFE1E1', match: (a) => !isGame(a) && (a.elofTags.subDomain === 'print-alphabet' || a.elofTags.subDomain === 'writing') },
-  { id: 'numbers',  label: 'Numbers',  icon: '🔢', color: '#E1F0FF', match: (a) => !isGame(a) && a.elofTags.domain === 'mathematics' && a.elofTags.subDomain !== 'geometry' && a.elofTags.subDomain !== 'algebraic' },
-  { id: 'shapes',   label: 'Shapes',   icon: '🔷', color: '#E1FFE9', match: (a) => !isGame(a) && a.elofTags.subDomain === 'geometry' },
-  { id: 'patterns', label: 'Patterns', icon: '🟡', color: '#FFF3D6', match: (a) => !isGame(a) && a.elofTags.subDomain === 'algebraic' },
-  { id: 'sounds',   label: 'Sounds',   icon: '👂', color: '#F3E1FF', match: (a) => !isGame(a) && a.elofTags.subDomain === 'phonological' },
-  { id: 'games',    label: 'Games',    icon: '🎈', color: '#FFE9D6', match: isGame },
-  { id: 'drawing',  label: 'Drawing',  icon: '🖍️', color: '#E1FFF9', match: (a) => a.sceneType === 'freedraw' },
+export const AREAS: { id: string; label: string; icon: string; color: string; scene: string; match: (a: Activity) => boolean }[] = [
+  { id: 'letters', scene: 'park',  label: 'Letters',  icon: '🔤', color: '#FFE1E1', match: (a) => !isGame(a) && (a.elofTags.subDomain === 'print-alphabet' || a.elofTags.subDomain === 'writing') },
+  { id: 'numbers', scene: 'peaks',  label: 'Numbers',  icon: '🔢', color: '#E1F0FF', match: (a) => !isGame(a) && a.elofTags.domain === 'mathematics' && a.elofTags.subDomain !== 'geometry' && a.elofTags.subDomain !== 'algebraic' },
+  { id: 'shapes', scene: 'desert',   label: 'Shapes',   icon: '🔷', color: '#E1FFE9', match: (a) => !isGame(a) && a.elofTags.subDomain === 'geometry' },
+  { id: 'patterns', scene: 'meadow', label: 'Patterns', icon: '🟡', color: '#FFF3D6', match: (a) => !isGame(a) && a.elofTags.subDomain === 'algebraic' },
+  { id: 'sounds', scene: 'forest',   label: 'Sounds',   icon: '👂', color: '#F3E1FF', match: (a) => !isGame(a) && a.elofTags.subDomain === 'phonological' },
+  { id: 'games', scene: 'castle',    label: 'Games',    icon: '🎈', color: '#FFE9D6', match: isGame },
+  { id: 'drawing', scene: 'park',  label: 'Drawing',  icon: '🖍️', color: '#E1FFF9', match: (a) => a.sceneType === 'freedraw' },
 ];

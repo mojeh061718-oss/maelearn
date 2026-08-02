@@ -10,7 +10,7 @@ import { initAudio, playSfx, speak, stopSpeech } from '../core/audio';
 import { SCENES } from '../scenes';
 import { art } from '../scenes/shared';
 import { BackButton, BigButton, Celebration } from '../ui/common';
-import Background from '../ui/Background';
+import Background, { AnimalRow, type SceneName } from '../ui/Background';
 import M0Page from './M0Page';
 
 type Route =
@@ -126,57 +126,58 @@ function Home(props: {
 }) {
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
-      <Background animate tint="#A8DCFF" />
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'calc(14 * var(--lu))', marginTop: 'calc(20 * var(--lu))' }}>
-          <span style={{ fontSize: 'calc(46 * var(--lu))', fontWeight: 700, color: '#3D348B', textShadow: '0 2px 0 #FFF' }}>
+      <Background animate scene="meadow" />
+      <AnimalRow animals={['panda', 'rabbit', 'penguin', 'pig', 'giraffe']} size={130} />
+      <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly', paddingBottom: 'calc(120 * var(--lu))' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'calc(16 * var(--lu))' }}>
+          <span style={{ fontSize: 'calc(52 * var(--lu))', fontWeight: 700, color: '#3D348B', textShadow: '0 3px 0 #FFF, 0 5px 8px rgba(0,0,0,0.12)' }}>
             Hi {props.profile.displayName}!
           </span>
-          <span style={{ fontSize: 'calc(26 * var(--lu))', background: '#FFD166', borderRadius: 'calc(20 * var(--lu))', padding: 'calc(6 * var(--lu)) calc(14 * var(--lu))', fontWeight: 700, boxShadow: '0 calc(3 * var(--lu)) 0 rgba(0,0,0,0.12)' }}>
+          <span style={{ fontSize: 'calc(28 * var(--lu))', background: '#FFD166', border: 'calc(4 * var(--lu)) solid #FFF', borderRadius: 'calc(20 * var(--lu))', padding: 'calc(6 * var(--lu)) calc(16 * var(--lu))', fontWeight: 700, boxShadow: '0 calc(4 * var(--lu)) 0 rgba(120,90,40,0.25)' }}>
             🪙 {props.profile.coins}
           </span>
         </div>
 
-        {/* mascot + big play */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'calc(30 * var(--lu))', marginTop: 'calc(8 * var(--lu))' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'calc(36 * var(--lu))' }}>
           <img src={art('animal_monkey.png')} alt="" draggable={false}
-            style={{ width: 'calc(150 * var(--lu))', filter: 'drop-shadow(0 calc(6 * var(--lu)) calc(5 * var(--lu)) rgba(0,0,0,0.18))' }} />
+            style={{ width: 'calc(190 * var(--lu))', filter: 'drop-shadow(0 calc(8 * var(--lu)) calc(6 * var(--lu)) rgba(0,0,0,0.22))' }} />
           <button onClick={() => { playSfx('tap'); props.onPlay(); }} style={{
-            border: 'none', cursor: 'pointer', touchAction: 'none',
-            background: 'linear-gradient(180deg, #FF8A5C, #FF6B6B)',
-            borderRadius: 'calc(36 * var(--lu))',
-            padding: 'calc(18 * var(--lu)) calc(56 * var(--lu))',
-            boxShadow: '0 calc(8 * var(--lu)) 0 #D14D4D',
+            border: 'calc(6 * var(--lu)) solid #FFF', cursor: 'pointer', touchAction: 'none',
+            background: 'linear-gradient(180deg, #FF9A6C, #FF6B6B)',
+            borderRadius: 'calc(40 * var(--lu))',
+            padding: 'calc(20 * var(--lu)) calc(64 * var(--lu))',
+            boxShadow: '0 calc(9 * var(--lu)) 0 #C74848, 0 calc(4 * var(--lu)) calc(16 * var(--lu)) rgba(0,0,0,0.18)',
             display: 'flex', flexDirection: 'column', alignItems: 'center',
             fontFamily: 'inherit',
           }}>
-            <span style={{ fontSize: 'calc(56 * var(--lu))', fontWeight: 700, color: '#FFF', textShadow: '0 2px 2px rgba(0,0,0,0.2)' }}>▶ Play!</span>
-            <span style={{ fontSize: 'calc(22 * var(--lu))', color: '#FFE9E1', fontWeight: 600 }}>
-              {props.pathDone} / {props.pathTotal} stars on the path
+            <span style={{ fontSize: 'calc(62 * var(--lu))', fontWeight: 700, color: '#FFF', textShadow: '0 3px 3px rgba(0,0,0,0.22)' }}>▶ Play!</span>
+            <span style={{ fontSize: 'calc(24 * var(--lu))', color: '#FFE9E1', fontWeight: 700 }}>
+              ⭐ {props.pathDone} / {props.pathTotal} on the path
             </span>
           </button>
         </div>
 
-        {/* free-choice areas */}
         <div style={{
-          marginTop: 'calc(24 * var(--lu))',
-          background: 'rgba(255,255,255,0.7)',
-          borderRadius: 'calc(34 * var(--lu))',
-          padding: 'calc(20 * var(--lu))',
-          display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'calc(16 * var(--lu))',
-          backdropFilter: 'blur(4px)',
+          background: 'rgba(255,255,255,0.75)',
+          border: 'calc(5 * var(--lu)) solid rgba(255,255,255,0.95)',
+          borderRadius: 'calc(38 * var(--lu))',
+          padding: 'calc(20 * var(--lu)) calc(24 * var(--lu))',
+          display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'calc(18 * var(--lu))',
+          backdropFilter: 'blur(6px)',
+          boxShadow: '0 calc(8 * var(--lu)) calc(24 * var(--lu)) rgba(0,0,0,0.12)',
         }}>
           {AREAS.map((a) => (
-            <BigButton key={a.id} icon={a.icon} label={a.label} size={118} fontScale={0.4}
+            <BigButton key={a.id} icon={a.icon} label={a.label} size={128} fontScale={0.42}
               color={a.color} burst onPress={() => props.onArea(a.id)} />
           ))}
-          <BigButton icon="📒" label="Stickers" size={118} fontScale={0.4} color="#FFFFFF" onPress={props.onStickers} />
+          <BigButton icon="📒" label="Stickers" size={128} fontScale={0.42} color="#FFE9F5" onPress={props.onStickers} />
         </div>
 
         <button onClick={props.onParent} style={{
-          position: 'absolute', bottom: 'calc(10 * var(--lu))', right: 'calc(14 * var(--lu))',
-          border: 'none', background: 'transparent', fontSize: 'calc(18 * var(--lu))',
-          color: '#8888', cursor: 'pointer', touchAction: 'none', fontFamily: 'inherit',
+          position: 'absolute', bottom: 'calc(8 * var(--lu))', right: 'calc(14 * var(--lu))',
+          border: 'none', background: 'rgba(255,255,255,0.5)', borderRadius: 'calc(10 * var(--lu))',
+          fontSize: 'calc(17 * var(--lu))', padding: 'calc(3 * var(--lu)) calc(8 * var(--lu))',
+          color: '#777', cursor: 'pointer', touchAction: 'none', fontFamily: 'inherit',
         }}>⚙ grown-ups</button>
       </div>
     </div>
@@ -198,16 +199,27 @@ function PathScreen(props: {
 
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
-      <Background tint="#C5EFC9" />
+      <Background scene="castle" />
       <BackButton onPress={props.onBack} />
-      <div style={{ textAlign: 'center', marginTop: 'calc(22 * var(--lu))', fontSize: 'calc(44 * var(--lu))', fontWeight: 700, color: '#2E7D32', textShadow: '0 2px 0 #FFF' }}>
-        🗺️ My Path
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'calc(18 * var(--lu))' }}>
+        <span style={{ fontSize: 'calc(42 * var(--lu))', fontWeight: 700, color: '#3D348B', background: 'rgba(255,255,255,0.85)', border: 'calc(5 * var(--lu)) solid #FFF', borderRadius: 'calc(26 * var(--lu))', padding: 'calc(6 * var(--lu)) calc(34 * var(--lu))', boxShadow: '0 calc(5 * var(--lu)) 0 rgba(120,90,40,0.2)' }}>
+          🗺️ My Path
+        </span>
       </div>
       <div ref={scrollRef} style={{
         position: 'absolute', top: 'calc(100 * var(--lu))', bottom: 0, left: 0, right: 0,
         overflowY: 'auto', touchAction: 'pan-y',
       }}>
         <div style={{ position: 'relative', height: `calc(${props.activities.length * STEP_H + 80} * var(--lu))` }}>
+          {/* dashed trail connecting the stones */}
+          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} preserveAspectRatio="none"
+            viewBox={`0 0 100 ${props.activities.length * STEP_H + 80}`}>
+            <polyline
+              points={props.activities.map((_, i) => `${50 + Math.sin(i * 0.9) * 26},${i * STEP_H + 70}`).join(' ')}
+              fill="none" stroke="rgba(255,255,255,0.9)" strokeWidth="1.6"
+              strokeDasharray="0.2 3.4" strokeLinecap="round" vectorEffect="non-scaling-stroke"
+              style={{ strokeWidth: 'calc(9 * var(--lu))' }} />
+          </svg>
           {props.activities.map((a, i) => {
             const done = props.doneIds.has(a.id);
             const current = i === props.currentIdx;
@@ -250,31 +262,41 @@ function PathScreen(props: {
 function AreaList(props: { content: ContentBundle; areaId: string; doneIds: Set<string>; onPick: (a: Activity) => void; onBack: () => void }) {
   const area = AREAS.find((a) => a.id === props.areaId)!;
   const acts = props.content.activities.filter(area.match);
+  const PEEK: Record<string, string> = { letters: 'rabbit', numbers: 'penguin', shapes: 'giraffe', patterns: 'pig', sounds: 'parrot', games: 'monkey', drawing: 'panda' };
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
-      <Background tint={area.color} />
+      <Background scene={area.scene as SceneName} />
+      <img src={art(`animal_${PEEK[area.id] ?? 'panda'}.png`)} alt="" aria-hidden style={{
+        position: 'absolute', bottom: 'calc(10 * var(--lu))', right: 'calc(24 * var(--lu))',
+        width: 'calc(150 * var(--lu))', pointerEvents: 'none',
+        filter: 'drop-shadow(0 calc(6 * var(--lu)) calc(5 * var(--lu)) rgba(0,0,0,0.2))',
+      }} />
       <BackButton onPress={props.onBack} />
-      <div style={{ textAlign: 'center', marginTop: 'calc(24 * var(--lu))', fontSize: 'calc(46 * var(--lu))', fontWeight: 700, color: '#3D348B', textShadow: '0 2px 0 #FFF' }}>
-        {area.icon} {area.label}
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'calc(18 * var(--lu))' }}>
+        <span style={{ fontSize: 'calc(42 * var(--lu))', fontWeight: 700, color: '#3D348B', background: 'rgba(255,255,255,0.9)', border: 'calc(5 * var(--lu)) solid #FFF', borderRadius: 'calc(26 * var(--lu))', padding: 'calc(6 * var(--lu)) calc(34 * var(--lu))', boxShadow: '0 calc(5 * var(--lu)) 0 rgba(120,90,40,0.2)' }}>
+          {area.icon} {area.label}
+        </span>
       </div>
       <div style={{
-        position: 'absolute', top: 'calc(110 * var(--lu))', bottom: 0, left: 0, right: 0,
-        overflowY: 'auto',
-        display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(calc(150 * var(--lu)), 1fr))',
-        gap: 'calc(20 * var(--lu))', padding: 'calc(30 * var(--lu))',
-        touchAction: 'pan-y',
-        alignContent: 'start',
+        position: 'absolute', top: 'calc(104 * var(--lu))', bottom: 0, left: 0, right: 0,
+        overflowY: 'auto', touchAction: 'pan-y',
       }}>
-        {acts.map((a) => (
-          <div key={a.id} style={{ position: 'relative' }}>
-            <BigButton icon={a.icon} label={a.title} size={140} fontScale={0.4}
-              color={props.doneIds.has(a.id) ? '#E8FFF5' : '#FFFFFF'}
-              onPress={() => props.onPick(a)} />
-            {props.doneIds.has(a.id) && (
-              <span style={{ position: 'absolute', top: 'calc(-6 * var(--lu))', right: 'calc(-6 * var(--lu))', fontSize: 'calc(34 * var(--lu))' }}>⭐</span>
-            )}
-          </div>
-        ))}
+        <div style={{
+          minHeight: '100%',
+          display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center',
+          gap: 'calc(22 * var(--lu))', padding: 'calc(28 * var(--lu)) calc(60 * var(--lu)) calc(140 * var(--lu))',
+        }}>
+          {acts.map((a) => (
+            <div key={a.id} style={{ position: 'relative' }}>
+              <BigButton icon={a.icon} label={a.title} size={158} fontScale={0.4}
+                color={props.doneIds.has(a.id) ? '#D9F7E8' : area.color}
+                onPress={() => props.onPick(a)} />
+              {props.doneIds.has(a.id) && (
+                <span style={{ position: 'absolute', top: 'calc(-8 * var(--lu))', right: 'calc(-8 * var(--lu))', fontSize: 'calc(38 * var(--lu))', filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.2))' }}>⭐</span>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -297,7 +319,7 @@ function ActivityHost(props: { activity: Activity; onExit: () => void; onDone: (
 
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
-      <Background tint={area?.color ?? '#BDE6FF'} />
+      <Background scene={(area?.scene ?? 'meadow') as SceneName} dim />
       {started && (
         <Scene
           activity={props.activity}
@@ -359,7 +381,7 @@ function ActivityHost(props: { activity: Activity; onExit: () => void; onDone: (
 function StickerBook(props: { profile: Profile; onBack: () => void }) {
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
-      <Background tint="#FFE1F0" />
+      <Background scene="meadow" />
       <BackButton onPress={props.onBack} />
       <div style={{ textAlign: 'center', marginTop: 'calc(24 * var(--lu))', fontSize: 'calc(46 * var(--lu))', fontWeight: 700, color: '#3D348B', textShadow: '0 2px 0 #FFF' }}>
         📒 Stickers

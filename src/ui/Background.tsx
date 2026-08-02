@@ -1,41 +1,66 @@
-// Layered scene background — sky gradient, sun, Kenney clouds and hills.
+// Full-bleed illustrated scene backgrounds (Kenney Background Elements,
+// rendered 2x from the vector source so they stay crisp on retina iPads).
 // Menus get gently drifting clouds; activity screens pass animate={false}
 // (research S23: no continuous motion while she's working).
 
 import { art } from '../scenes/shared';
 
-export default function Background(props: { tint?: string; animate?: boolean }) {
-  const { tint = '#BDE6FF', animate = false } = props;
+export type SceneName = 'meadow' | 'forest' | 'desert' | 'castle' | 'park' | 'peaks';
+
+export default function Background(props: { scene?: SceneName; animate?: boolean; dim?: boolean }) {
+  const { scene = 'meadow', animate = false, dim = false } = props;
   return (
     <div aria-hidden style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-      <style>{`@keyframes drift { from { transform: translateX(-8%); } to { transform: translateX(108%); } }`}</style>
-      {/* sky */}
-      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(180deg, ${tint} 0%, #FDF6E3 62%, #FDF6E3 100%)` }} />
+      <style>{`@keyframes drift { from { transform: translateX(-12%); } to { transform: translateX(112%); } }`}</style>
+      <img
+        src={art(`bg_${scene}.png`)}
+        alt=""
+        style={{
+          position: 'absolute', inset: 0, width: '100%', height: '100%',
+          objectFit: 'cover',
+          filter: `saturate(1.35) brightness(1.03)${dim ? ' opacity(0.55)' : ''}`,
+        }}
+      />
+      {dim && <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,252,245,0.45)' }} />}
       {/* sun */}
-      <svg viewBox="0 0 100 100" style={{ position: 'absolute', top: 'calc(-30 * var(--lu))', right: 'calc(-20 * var(--lu))', width: 'calc(220 * var(--lu))', opacity: 0.9 }}>
-        <circle cx="50" cy="50" r="26" fill="#FFD166" />
+      <svg viewBox="0 0 100 100" style={{ position: 'absolute', top: 'calc(-26 * var(--lu))', right: 'calc(-14 * var(--lu))', width: 'calc(210 * var(--lu))' }}>
+        <circle cx="50" cy="50" r="25" fill="#FFCE45" />
+        <circle cx="50" cy="50" r="21" fill="#FFDD70" />
         {Array.from({ length: 12 }, (_, i) => {
           const a = (i * Math.PI) / 6;
-          return <line key={i} x1={50 + Math.cos(a) * 33} y1={50 + Math.sin(a) * 33} x2={50 + Math.cos(a) * 42} y2={50 + Math.sin(a) * 42} stroke="#FFD166" strokeWidth="5" strokeLinecap="round" />;
+          return <line key={i} x1={50 + Math.cos(a) * 32} y1={50 + Math.sin(a) * 32} x2={50 + Math.cos(a) * 41} y2={50 + Math.sin(a) * 41} stroke="#FFCE45" strokeWidth="5.5" strokeLinecap="round" />;
         })}
       </svg>
-      {/* clouds */}
-      {[
-        { img: 'cloud1.png', top: '8%', left: '12%', w: 170, dur: 70, delay: 0 },
-        { img: 'cloud2.png', top: '16%', left: '55%', w: 130, dur: 95, delay: -30 },
-        { img: 'cloud3.png', top: '5%', left: '75%', w: 110, dur: 80, delay: -60 },
+      {animate && [
+        { img: 'cloud1.png', top: '9%', w: 170, dur: 75, delay: 0 },
+        { img: 'cloud2.png', top: '20%', w: 125, dur: 100, delay: -40 },
+        { img: 'cloud3.png', top: '4%', w: 105, dur: 88, delay: -70 },
       ].map((c, i) => (
         <img key={i} src={art(c.img)} alt="" style={{
-          position: 'absolute', top: c.top, left: animate ? 0 : c.left,
-          width: `calc(${c.w} * var(--lu))`, opacity: 0.85,
-          animation: animate ? `drift ${c.dur}s linear ${c.delay}s infinite` : undefined,
+          position: 'absolute', top: c.top, left: 0,
+          width: `calc(${c.w} * var(--lu))`, opacity: 0.9,
+          animation: `drift ${c.dur}s linear ${c.delay}s infinite`,
         }} />
       ))}
-      {/* hills + trees along the bottom */}
-      <img src={art('hills1.png')} alt="" style={{ position: 'absolute', bottom: 'calc(-8 * var(--lu))', left: '-4%', width: '58%', opacity: 0.5 }} />
-      <img src={art('hills2.png')} alt="" style={{ position: 'absolute', bottom: 'calc(-8 * var(--lu))', right: '-6%', width: '62%', opacity: 0.5 }} />
-      <img src={art('tree01.png')} alt="" style={{ position: 'absolute', bottom: 0, left: '3%', height: 'calc(110 * var(--lu))', opacity: 0.65 }} />
-      <img src={art('tree08.png')} alt="" style={{ position: 'absolute', bottom: 0, right: '4%', height: 'calc(95 * var(--lu))', opacity: 0.65 }} />
+    </div>
+  );
+}
+
+/** Decorative animals standing on the ground band. Pure decoration. */
+export function AnimalRow(props: { animals: string[]; size?: number }) {
+  const { animals, size = 120 } = props;
+  return (
+    <div aria-hidden style={{
+      position: 'absolute', bottom: 'calc(8 * var(--lu))', left: 0, right: 0,
+      display: 'flex', justifyContent: 'space-evenly', alignItems: 'flex-end',
+      pointerEvents: 'none',
+    }}>
+      {animals.map((a, i) => (
+        <img key={a} src={art(`animal_${a}.png`)} alt="" style={{
+          width: `calc(${size - (i % 2) * 18} * var(--lu))`,
+          filter: 'drop-shadow(0 calc(5 * var(--lu)) calc(4 * var(--lu)) rgba(0,0,0,0.2))',
+        }} />
+      ))}
     </div>
   );
 }
