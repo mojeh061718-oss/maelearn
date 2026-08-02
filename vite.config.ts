@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 // Deployed at https://<owner>.github.io/maelearn/
 export default defineConfig({
   base: '/maelearn/',
+  define: { __BUILD__: JSON.stringify(new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC') },
   plugins: [
     react(),
     VitePWA({

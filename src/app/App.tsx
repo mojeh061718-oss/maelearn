@@ -439,6 +439,7 @@ function ParentGate(props: { onBack: () => void; onM0: () => void }) {
         <button onClick={props.onM0} style={{ fontFamily: 'inherit', fontSize: 'calc(26 * var(--lu))', padding: 'calc(12 * var(--lu)) calc(24 * var(--lu))', borderRadius: 'calc(16 * var(--lu))', border: 'none', background: '#EAF6FF', fontWeight: 700, cursor: 'pointer' }}>
           🧪 M0 device tests
         </button>
+        <p style={{ fontSize: 'calc(18 * var(--lu))', color: '#AAA' }}>build {__BUILD__}</p>
       </div>
     </div>
   );
