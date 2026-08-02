@@ -45,7 +45,14 @@ export default function App() {
   const go = useCallback((r: Route) => { stopSpeech(); setRoute(r); }, []);
 
   if (!content || !profile) {
-    return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', fontSize: 48 }}>🌞</div>;
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 18 }}>
+        <div style={{ fontSize: 72, animation: 'sunSpin 3s linear infinite' }}>🌞</div>
+        <div style={{ fontSize: 26, fontWeight: 700, color: '#3D348B', fontFamily: "'Fredoka', sans-serif" }}>
+          Maelie's Learning Hub
+        </div>
+      </div>
+    );
   }
 
   const pathActivities = content.path
@@ -127,7 +134,7 @@ function Home(props: {
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
       <Background animate scene="meadow" />
-      <AnimalRow animals={['panda', 'rabbit', 'penguin', 'pig', 'giraffe']} size={130} />
+      <AnimalRow animals={['panda', 'rabbit', 'penguin', 'pig', 'giraffe']} size={130} lively />
       <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly', paddingBottom: 'calc(120 * var(--lu))' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'calc(16 * var(--lu))' }}>
           <span style={{ fontSize: 'calc(52 * var(--lu))', fontWeight: 700, color: '#3D348B', textShadow: '0 3px 0 #FFF, 0 5px 8px rgba(0,0,0,0.12)' }}>
@@ -139,8 +146,8 @@ function Home(props: {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 'calc(36 * var(--lu))' }}>
-          <img src={art('animal_monkey.png')} alt="" draggable={false}
-            style={{ width: 'calc(190 * var(--lu))', filter: 'drop-shadow(0 calc(8 * var(--lu)) calc(6 * var(--lu)) rgba(0,0,0,0.22))' }} />
+          <img src={art('animal_monkey.png')} alt="" draggable={false} className="sticker"
+            style={{ width: 'calc(190 * var(--lu))', animation: 'bob 3.4s ease-in-out infinite' }} />
           <button onClick={() => { playSfx('tap'); props.onPlay(); }} style={{
             border: 'calc(6 * var(--lu)) solid #FFF', cursor: 'pointer', touchAction: 'none',
             background: 'linear-gradient(180deg, #FF9A6C, #FF6B6B)',
@@ -166,11 +173,11 @@ function Home(props: {
           backdropFilter: 'blur(6px)',
           boxShadow: '0 calc(8 * var(--lu)) calc(24 * var(--lu)) rgba(0,0,0,0.12)',
         }}>
-          {AREAS.map((a) => (
+          {AREAS.map((a, i) => (
             <BigButton key={a.id} icon={a.icon} label={a.label} size={128} fontScale={0.42}
-              color={a.color} burst onPress={() => props.onArea(a.id)} />
+              color={a.color} burst delay={0.06 * i} onPress={() => props.onArea(a.id)} />
           ))}
-          <BigButton icon="📒" label="Stickers" size={128} fontScale={0.42} color="#FFE9F5" onPress={props.onStickers} />
+          <BigButton icon="📒" label="Stickers" size={128} fontScale={0.42} color="#FFE9F5" delay={0.06 * 7} onPress={props.onStickers} />
         </div>
 
         <button onClick={props.onParent} style={{
@@ -234,11 +241,16 @@ function PathScreen(props: {
                   left: `${xPct}%`, transform: 'translateX(-50%)',
                   width: 'calc(120 * var(--lu))', height: 'calc(120 * var(--lu))',
                   borderRadius: '50%',
-                  background: done ? '#C9F2D9' : current ? '#FFFFFF' : '#E7E2D5',
-                  border: current ? 'calc(6 * var(--lu)) solid #FFB020' : 'calc(6 * var(--lu)) solid rgba(0,0,0,0.06)',
+                  background: done
+                    ? 'radial-gradient(circle at 38% 30%, #E8FFF2, #B9EFD0)'
+                    : current
+                      ? 'radial-gradient(circle at 38% 30%, #FFFFFF, #FFF3D6)'
+                      : 'radial-gradient(circle at 38% 30%, #F2EEE4, #DBD5C4)',
+                  border: current ? 'calc(6 * var(--lu)) solid #FFB020' : 'calc(6 * var(--lu)) solid #FFFFFF',
                   boxShadow: current
-                    ? '0 0 calc(28 * var(--lu)) rgba(255,176,32,0.75), 0 calc(6 * var(--lu)) 0 rgba(0,0,0,0.12)'
-                    : '0 calc(5 * var(--lu)) 0 rgba(0,0,0,0.1)',
+                    ? '0 0 calc(28 * var(--lu)) rgba(255,176,32,0.75), 0 calc(7 * var(--lu)) 0 rgba(120,90,40,0.25), inset 0 calc(-6 * var(--lu)) 0 rgba(0,0,0,0.06)'
+                    : '0 calc(5 * var(--lu)) 0 rgba(120,90,40,0.18), inset 0 calc(-6 * var(--lu)) 0 rgba(0,0,0,0.06)',
+                  animation: current ? 'bounceStone 1.7s ease-in-out infinite' : undefined,
                   display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                   fontSize: 'calc(44 * var(--lu))',
                   filter: locked ? 'grayscale(0.7) opacity(0.7)' : 'none',
@@ -266,10 +278,9 @@ function AreaList(props: { content: ContentBundle; areaId: string; doneIds: Set<
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
       <Background scene={area.scene as SceneName} />
-      <img src={art(`animal_${PEEK[area.id] ?? 'panda'}.png`)} alt="" aria-hidden style={{
+      <img src={art(`animal_${PEEK[area.id] ?? 'panda'}.png`)} alt="" aria-hidden className="sticker" style={{
         position: 'absolute', bottom: 'calc(10 * var(--lu))', right: 'calc(24 * var(--lu))',
         width: 'calc(150 * var(--lu))', pointerEvents: 'none',
-        filter: 'drop-shadow(0 calc(6 * var(--lu)) calc(5 * var(--lu)) rgba(0,0,0,0.2))',
       }} />
       <BackButton onPress={props.onBack} />
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'calc(18 * var(--lu))' }}>
@@ -286,10 +297,11 @@ function AreaList(props: { content: ContentBundle; areaId: string; doneIds: Set<
           display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center',
           gap: 'calc(22 * var(--lu))', padding: 'calc(28 * var(--lu)) calc(60 * var(--lu)) calc(140 * var(--lu))',
         }}>
-          {acts.map((a) => (
+          {acts.map((a, i) => (
             <div key={a.id} style={{ position: 'relative' }}>
               <BigButton icon={a.icon} label={a.title} size={158} fontScale={0.4}
                 color={props.doneIds.has(a.id) ? '#D9F7E8' : area.color}
+                delay={Math.min(0.03 * i, 0.5)}
                 onPress={() => props.onPick(a)} />
               {props.doneIds.has(a.id) && (
                 <span style={{ position: 'absolute', top: 'calc(-8 * var(--lu))', right: 'calc(-8 * var(--lu))', fontSize: 'calc(38 * var(--lu))', filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.2))' }}>⭐</span>
@@ -352,10 +364,17 @@ function ActivityHost(props: { activity: Activity; onExit: () => void; onDone: (
           <div style={{
             background: '#FFFFFF', borderRadius: 'calc(40 * var(--lu))',
             padding: 'calc(36 * var(--lu)) calc(60 * var(--lu))',
-            boxShadow: '0 calc(10 * var(--lu)) 0 rgba(0,0,0,0.1)',
+            boxShadow: '0 calc(10 * var(--lu)) 0 rgba(120,90,40,0.15)',
+            border: 'calc(6 * var(--lu)) solid #FFE9C9',
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'calc(14 * var(--lu))',
             maxWidth: 'calc(640 * var(--lu))',
+            position: 'relative',
+            animation: 'popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both',
           }}>
+            <img src={art('animal_monkey.png')} alt="" className="sticker" style={{
+              position: 'absolute', left: 'calc(-70 * var(--lu))', bottom: 'calc(-20 * var(--lu))',
+              width: 'calc(130 * var(--lu))', animation: 'bob 3s ease-in-out infinite',
+            }} />
             <span style={{ fontSize: 'calc(110 * var(--lu))' }}>{props.activity.icon}</span>
             <span style={{ fontSize: 'calc(40 * var(--lu))', fontWeight: 700, color: '#3D348B' }}>{props.activity.title}</span>
             <span style={{ fontSize: 'calc(26 * var(--lu))', color: '#666', textAlign: 'center', lineHeight: 1.35 }}>
@@ -363,13 +382,14 @@ function ActivityHost(props: { activity: Activity; onExit: () => void; onDone: (
             </span>
           </div>
           <button onClick={() => { playSfx('good'); setStarted(true); }} style={{
-            border: 'none', cursor: 'pointer', touchAction: 'none', fontFamily: 'inherit',
+            border: 'calc(5 * var(--lu)) solid #FFF', cursor: 'pointer', touchAction: 'none', fontFamily: 'inherit',
             background: 'linear-gradient(180deg, #35D07F, #06D6A0)',
             borderRadius: 'calc(32 * var(--lu))',
             padding: 'calc(16 * var(--lu)) calc(70 * var(--lu))',
-            boxShadow: '0 calc(7 * var(--lu)) 0 #059B74',
+            boxShadow: '0 calc(7 * var(--lu)) 0 #059B74, 0 calc(3 * var(--lu)) calc(12 * var(--lu)) rgba(0,0,0,0.15)',
             fontSize: 'calc(48 * var(--lu))', fontWeight: 700, color: '#FFF',
             textShadow: '0 2px 2px rgba(0,0,0,0.2)',
+            animation: 'popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both',
           }}>GO!</button>
         </div>
       )}

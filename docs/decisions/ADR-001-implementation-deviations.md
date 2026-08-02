@@ -100,3 +100,18 @@ here with rationale.
   a dashed trail connecting stones.
 - **Cards:** gradient faces, white borders, warmer shadows; single-character
   (letter/number) faces render in a rainbow palette in Fredoka.
+
+## Revision 4 — graphics polish pass
+
+- Entrance animations: staggered pop-in on all cards/panels (one-shot,
+  removed after entry so press transforms work).
+- Press feel: buttons depress (translateY + shadow collapse) while held.
+- Sticker treatment: white outline drop-shadow on all animal characters;
+  mascot and home animals gently bob (menu screens only, per S23).
+- Trace: handwriting paper guides (solid top/base, dashed pink midline),
+  ink color matches each letter's rainbow color, letter-chip progress row
+  (done chips become stars).
+- Celebration: confetti rain + sprung icon with drop shadow.
+- Path: radial-gradient stones with white rings, current stone bounces.
+- Loading screen: spinning sun + wordmark; letterbox bands got a sky
+  gradient.

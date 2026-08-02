@@ -46,9 +46,10 @@ export default function Background(props: { scene?: SceneName; animate?: boolean
   );
 }
 
-/** Decorative animals standing on the ground band. Pure decoration. */
-export function AnimalRow(props: { animals: string[]; size?: number }) {
-  const { animals, size = 120 } = props;
+/** Decorative animals standing on the ground band. Pure decoration.
+ * lively adds a slow staggered bob — menu screens only (S23). */
+export function AnimalRow(props: { animals: string[]; size?: number; lively?: boolean }) {
+  const { animals, size = 120, lively = false } = props;
   return (
     <div aria-hidden style={{
       position: 'absolute', bottom: 'calc(8 * var(--lu))', left: 0, right: 0,
@@ -56,9 +57,9 @@ export function AnimalRow(props: { animals: string[]; size?: number }) {
       pointerEvents: 'none',
     }}>
       {animals.map((a, i) => (
-        <img key={a} src={art(`animal_${a}.png`)} alt="" style={{
+        <img key={a} src={art(`animal_${a}.png`)} alt="" className="sticker" style={{
           width: `calc(${size - (i % 2) * 18} * var(--lu))`,
-          filter: 'drop-shadow(0 calc(5 * var(--lu)) calc(4 * var(--lu)) rgba(0,0,0,0.2))',
+          animation: lively ? `bob ${3.2 + (i % 3) * 0.5}s ease-in-out ${i * 0.45}s infinite` : undefined,
         }} />
       ))}
     </div>

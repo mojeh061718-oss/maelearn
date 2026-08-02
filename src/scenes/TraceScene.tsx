@@ -11,7 +11,7 @@ import { scoreStroke, toleranceForDifficulty, type Glyph } from '../core/traceSc
 import { loadContent } from '../core/content';
 import { playSfx, speak } from '../core/audio';
 import { burst } from '../ui/juice';
-import { Dots } from '../ui/common';
+import { charColor } from '../ui/common';
 
 interface TraceParams { glyphIds: string[]; speakEach?: boolean; celebrateWord?: string; }
 
@@ -20,7 +20,7 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
   const hostRef = useRef<HTMLDivElement>(null);
   const [glyphs, setGlyphs] = useState<Glyph[] | null>(null);
   const [gi, setGi] = useState(0);            // glyph index
-  const [si, setSi] = useState(0);            // stroke index within glyph
+  const [, setSi] = useState(0);              // re-render trigger on stroke advance
   const stateRef = useRef({ gi: 0, si: 0, misses: 0, assisted: false });
 
   useEffect(() => {
@@ -40,6 +40,7 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
     host.appendChild(ghost);
 
     const ink = new InkLayer(host, vp0);
+    ink.setColor(charColor(glyphs[0]?.label ?? 'A'));
     const offVp = onViewportChange((v) => {
       fitCanvas(ghost, v); applyLogicalTransform(gctx, v);
       ink.resize(v); drawGhost();
@@ -69,6 +70,17 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
       gctx.setTransform(1, 0, 0, 1, 0, 0);
       gctx.clearRect(0, 0, ghost.width, ghost.height);
       gctx.restore();
+      // handwriting paper guides: solid top/base lines, dashed midline
+      const GX0 = 262, GX1 = 762, TOP = 124, MID = 364, BASE = 604;
+      gctx.lineWidth = 4;
+      gctx.setLineDash([]);
+      gctx.strokeStyle = '#B9D4EA';
+      gctx.beginPath(); gctx.moveTo(GX0, TOP); gctx.lineTo(GX1, TOP); gctx.stroke();
+      gctx.beginPath(); gctx.moveTo(GX0, BASE); gctx.lineTo(GX1, BASE); gctx.stroke();
+      gctx.strokeStyle = '#F3B8C6';
+      gctx.setLineDash([14, 14]);
+      gctx.beginPath(); gctx.moveTo(GX0, MID); gctx.lineTo(GX1, MID); gctx.stroke();
+      gctx.setLineDash([]);
       g.strokes.forEach((s, i) => {
         gctx.beginPath();
         s.points.forEach(([x, y], j) => (j ? gctx.lineTo(x, y) : gctx.moveTo(x, y)));
@@ -135,6 +147,7 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
           st.gi += 1; st.si = 0;
           setGi(st.gi); setSi(0);
           const next = glyphs![st.gi];
+          ink.setColor(charColor(next.label));
           setTimeout(() => speak(`Now trace ${next.label}! ${next.strokes[0].hint}`), 700);
         } else {
           if (params.celebrateWord) setTimeout(() => speak(`You wrote ${params.celebrateWord}!`), 600);
@@ -207,11 +220,25 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
         boxShadow: '0 calc(10 * var(--lu)) 0 rgba(0,0,0,0.08)',
       }} />
       <div ref={hostRef} style={{ position: 'absolute', inset: 0 }} />
-      <div style={{ position: 'absolute', top: 'calc(24 * var(--lu))', left: 0, right: 0, pointerEvents: 'none' }}>
-        {total > 1 && <Dots total={total} done={gi} />}
-        <div style={{ textAlign: 'center', fontSize: 'calc(30 * var(--lu))', color: '#8886', marginTop: 'calc(6 * var(--lu))' }}>
-          {si + 1}
-        </div>
+      <div style={{
+        position: 'absolute', top: 'calc(20 * var(--lu))', left: 0, right: 0, pointerEvents: 'none',
+        display: 'flex', justifyContent: 'center', gap: 'calc(10 * var(--lu))',
+      }}>
+        {(glyphs ?? []).map((g, i) => (
+          <div key={i} style={{
+            minWidth: 'calc(56 * var(--lu))', height: 'calc(56 * var(--lu))',
+            borderRadius: 'calc(16 * var(--lu))',
+            background: i < gi ? '#B9EFD0' : i === gi ? '#FFFFFF' : 'rgba(255,255,255,0.55)',
+            border: i === gi ? 'calc(4 * var(--lu)) solid #FFB020' : 'calc(4 * var(--lu)) solid rgba(255,255,255,0.8)',
+            boxShadow: '0 calc(3 * var(--lu)) 0 rgba(120,90,40,0.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 'calc(32 * var(--lu))', fontWeight: 700,
+            color: i <= gi ? charColor(g.label) : '#AAA',
+          }}>
+            {i < gi ? '⭐' : g.label}
+          </div>
+        ))}
+        {total === 1 && null}
       </div>
     </div>
   );

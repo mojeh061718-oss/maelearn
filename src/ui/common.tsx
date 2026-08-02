@@ -21,17 +21,24 @@ export function BigButton(props: {
   fontScale?: number;
   disabled?: boolean;
   burst?: boolean;
+  delay?: number;         // entrance stagger, seconds
   style?: React.CSSProperties;
 }) {
-  const { icon, label, onPress, color = '#FFFFFF', size = 110, fontScale = 0.45, disabled, style } = props;
+  const { icon, label, onPress, color = '#FFFFFF', size = 110, fontScale = 0.45, disabled, delay = 0, style } = props;
   const ref = useRef<HTMLButtonElement>(null);
+  const [entered, setEntered] = useState(delay < 0); // delay<0 skips entrance
+  const [pressed, setPressed] = useState(false);
   const s = Math.max(88, size);
   const charFace = isChar(icon);
   return (
     <button
       ref={ref}
       disabled={disabled}
-      onPointerDown={(e) => e.currentTarget.setPointerCapture(e.pointerId)}
+      onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); setPressed(true); }}
+      onPointerUp={() => setPressed(false)}
+      onPointerCancel={() => setPressed(false)}
+      onPointerLeave={() => setPressed(false)}
+      onAnimationEnd={() => setEntered(true)}
       onClick={() => {
         if (disabled) return;
         playSfx('tap');
@@ -44,7 +51,9 @@ export function BigButton(props: {
         border: 'calc(5 * var(--lu)) solid rgba(255,255,255,0.95)',
         borderRadius: `calc(26 * var(--lu))`,
         background: `linear-gradient(170deg, #FFFFFF 0%, ${color} 85%)`,
-        boxShadow: '0 calc(6 * var(--lu)) 0 rgba(120,90,40,0.22), 0 calc(2 * var(--lu)) calc(10 * var(--lu)) rgba(0,0,0,0.08)',
+        boxShadow: pressed
+          ? '0 calc(2 * var(--lu)) 0 rgba(120,90,40,0.22)'
+          : '0 calc(6 * var(--lu)) 0 rgba(120,90,40,0.22), 0 calc(2 * var(--lu)) calc(10 * var(--lu)) rgba(0,0,0,0.08)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -53,14 +62,14 @@ export function BigButton(props: {
         fontSize: `calc(${s * fontScale} * var(--lu))`,
         fontFamily: 'inherit',
         cursor: 'pointer',
-        transition: 'transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        transition: 'transform 0.1s ease, box-shadow 0.1s ease',
+        transform: pressed ? 'translateY(calc(4 * var(--lu))) scale(0.97)' : 'none',
+        animation: entered ? undefined : `popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}s both`,
         touchAction: 'none',
         opacity: disabled ? 0.4 : 1,
         padding: `calc(8 * var(--lu))`,
         ...style,
       }}
-      onPointerEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)'; }}
-      onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
     >
       <span style={{
         lineHeight: 1,
@@ -106,29 +115,50 @@ export function Dots(props: { total: number; done: number }) {
   );
 }
 
+const CONFETTI_COLORS = ['#FF6B6B', '#FFD166', '#06D6A0', '#5BC0EB', '#9B5DE5', '#F3A712'];
+
 /** Full-screen celebration; auto-dismisses. Tied to completion only (§12). */
 export function Celebration(props: { icon: string; onDone: () => void }) {
   const [phase, setPhase] = useState(0);
+  const confetti = useRef(
+    Array.from({ length: 28 }, (_, i) => ({
+      left: (i * 37 + 13) % 100,
+      delay: (i % 7) * 0.12,
+      dur: 1.5 + ((i * 13) % 10) / 10,
+      color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+      w: 10 + ((i * 7) % 12),
+      round: i % 3 === 0,
+    })),
+  );
   useEffect(() => {
     playSfx('great');
     const t1 = setTimeout(() => setPhase(1), 100);
-    const t2 = setTimeout(props.onDone, 2000);
+    const t2 = setTimeout(props.onDone, 2300);
     return () => { clearTimeout(t1); clearTimeout(t2); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div
       style={{
-        position: 'absolute', inset: 0, zIndex: 40,
+        position: 'absolute', inset: 0, zIndex: 40, overflow: 'hidden',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         background: 'rgba(255,248,231,0.92)',
       }}
     >
+      {confetti.current.map((c, i) => (
+        <div key={i} style={{
+          position: 'absolute', top: 0, left: `${c.left}%`,
+          width: `calc(${c.w} * var(--lu))`, height: `calc(${c.round ? c.w : c.w * 1.6} * var(--lu))`,
+          background: c.color, borderRadius: c.round ? '50%' : 'calc(3 * var(--lu))',
+          animation: `confettiFall ${c.dur}s linear ${c.delay}s both`,
+        }} />
+      ))}
       <div
         style={{
           fontSize: 'calc(220 * var(--lu))',
           transform: phase ? 'scale(1)' : 'scale(0.2)',
           transition: 'transform 0.5s cubic-bezier(0.34, 1.8, 0.64, 1)',
+          filter: 'drop-shadow(0 calc(10 * var(--lu)) calc(10 * var(--lu)) rgba(0,0,0,0.15))',
         }}
       >
         {props.icon}
