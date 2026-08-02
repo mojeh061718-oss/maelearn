@@ -1,7 +1,7 @@
 // Pattern scene — duplicate / extend / create (PK4: recognize, duplicate,
 // extend, create). Create mode has no wrong answers: she builds, we read it back.
 
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { SceneProps } from './shared';
 import { playSfx, speak } from '../core/audio';
 import { burstAtElement } from '../ui/juice';
@@ -26,14 +26,6 @@ export default function PatternScene({ activity, onComplete, onMiss }: SceneProp
   }, [params]);
 
   const [filled, setFilled] = useState<string[]>([]);
-  const spoken = useRef(false);
-  if (!spoken.current) {
-    spoken.current = true;
-    const msg = params.mode === 'extend' ? 'What comes next in the pattern?'
-      : params.mode === 'duplicate' ? 'Copy the pattern!'
-      : 'Make your very own pattern!';
-    setTimeout(() => speak(msg), 300);
-  }
 
   const targetLen = params.mode === 'extend' ? 1 : params.mode === 'duplicate' ? sequence.length : 6;
 
@@ -44,7 +36,7 @@ export default function PatternScene({ activity, onComplete, onMiss }: SceneProp
       const next = [...filled, icon];
       setFilled(next);
       if (next.length === targetLen) {
-        speak(`Your pattern! ${next.join(' ')}`.replace(/[^\w\s]/g, ' '));
+        speak('What a beautiful pattern you made!');
         playSfx('great');
         setTimeout(() => onComplete({ assisted: false }), 900);
       }

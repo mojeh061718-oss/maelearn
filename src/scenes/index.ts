@@ -9,6 +9,8 @@ import PatternScene from './PatternScene';
 import PhonicsScene from './PhonicsScene';
 import ShapeScene from './ShapeScene';
 import FreedrawScene from './FreedrawScene';
+import PopScene from './PopScene';
+import FeedScene from './FeedScene';
 
 export const SCENES: Record<SceneType, ComponentType<SceneProps>> = {
   trace: TraceScene,
@@ -19,4 +21,6 @@ export const SCENES: Record<SceneType, ComponentType<SceneProps>> = {
   phonics: PhonicsScene,
   shape: ShapeScene,
   freedraw: FreedrawScene,
+  pop: PopScene,
+  feed: FeedScene,
 };

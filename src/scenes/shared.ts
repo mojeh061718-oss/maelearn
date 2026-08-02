@@ -16,6 +16,12 @@ export const LETTER_SOUNDS: Record<string, string> = {
   V: 'vvv', W: 'wuh', X: 'ks', Y: 'yuh', Z: 'zzz',
 };
 
+export const NUM_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty',
+  'twenty one', 'twenty two', 'twenty three', 'twenty four', 'twenty five', 'twenty six', 'twenty seven', 'twenty eight', 'twenty nine', 'thirty'];
+
+export const art = (file: string): string => `${import.meta.env.BASE_URL}assets/art/${file}`;
+
 export function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {

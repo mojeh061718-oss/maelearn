@@ -18,11 +18,6 @@ export default function SortScene({ activity, onComplete, onMiss }: SceneProps) 
   const [items] = useState(() => shuffle(params.items.map((it, i) => ({ ...it, id: i }))));
   const [placed, setPlaced] = useState<Set<number>>(new Set());
   const binRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const spoken = useRef(false);
-  if (!spoken.current) {
-    spoken.current = true;
-    setTimeout(() => speak(`Put each one where it belongs!`), 300);
-  }
 
   function onDragEnd(id: number, itemBin: string, clientX: number, clientY: number): boolean {
     for (const b of params.bins) {

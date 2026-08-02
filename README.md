@@ -16,10 +16,15 @@ no accounts, no ads, no analytics, no network calls at runtime.
 
 ## What's inside
 
-- **77 activities** across 8 scene types: letter/numeral **tracing** (incl.
-  "MAELIE"), letter-sound / case / quantity **matching**, **sorting**,
-  **counting** (tap, subitize, rote-to-30), **patterns**, a **phonics ladder**
-  in research-backed order, **shapes** (2D + solids), and free **drawing**.
+- **87 activities** across 10 scene types: letter/numeral **tracing** (incl.
+  "MAELIE"), matching, sorting, counting, patterns, a research-ordered
+  **phonics ladder**, shapes, free drawing, and two games — **balloon pop**
+  and **feed-the-animal**.
+- **Structured learning path**: a 30-step winding trail with sequential
+  unlock and stars, plus free-choice areas.
+- **Real voice**: 432 pre-generated neural TTS clips (Piper), fully offline.
+- Spoken + written **directions** on every activity, with a replay button.
+- Art: Kenney CC0 packs (backgrounds, animals, fish, sounds) + Fredoka (OFL).
 - Precise finger tracing: Pointer Events + coalesced samples (Safari 18.2+),
   perfect-freehand ink on a desynchronized canvas.
 - Sticker rewards on completion only — no streaks, no nagging, no dark patterns.
@@ -30,7 +35,8 @@ no accounts, no ads, no analytics, no network calls at runtime.
 npm install
 npm run dev          # local dev server
 npm run build        # type-check + production build to dist/
-npm run gen:content  # regenerate activities/glyphs JSON from tools/gen-content.mjs
+npm run gen:content  # regenerate activities/glyphs/path JSON
+sh tools/fetch-voice-model.sh && node tools/gen-voice.mjs  # regenerate voice clips
 ```
 
 Deploys automatically to GitHub Pages on push to `main`

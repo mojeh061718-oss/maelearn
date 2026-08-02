@@ -50,3 +50,33 @@ here with rationale.
   correct on the target device, possibly off on non-Apple platforms.
 - `speechSynthesis` voice quality varies by iOS version; the app picks the
   first en-US voice, preferring Samantha/Karen.
+
+## Revision 2 — response to first device feedback
+
+- **BUG FIX (calibration):** `fitCanvas` applied the letterbox offset to
+  canvases that already live inside the offset stage container — ink landed
+  shifted from the finger by exactly the letterbox amount, and the wider the
+  iPad's letterbox, the worse it got. Canvases now sit at 0,0 inside the stage;
+  only the body-level particle canvas keeps the offset (`fitCanvasToBody`).
+  Regression-tested at a 217px-offset viewport: stroke lands on the glyph and
+  scores correctly.
+- **ADR-007 (supersedes ADR-003):** voice-over is now pre-generated neural TTS
+  — Piper `en_US-amy-medium`, 432 clips, mp3 48kbps mono, 5.3 MB, fully
+  precached — played through the single AudioContext. The Web Speech API is
+  only a fallback for unmapped strings. `tools/gen-voice.mjs` +
+  `tools/synth_voice.py` regenerate; `tools/fetch-voice-model.sh` fetches the
+  (uncommitted) 63 MB model.
+- **CC0 assets now in (supersedes "Kenney not purchased"):** Kenney's free
+  individual packs are CC0 and downloadable — Interface Sounds (all SFX),
+  Background Elements (clouds/hills/trees), Animal Pack (feed-game + mascot),
+  Fish Pack (counting), Shape Characters. No purchase needed.
+- **Typography:** Fredoka (OFL), self-hosted woff2 — rounded, single-story
+  forms, matches §9's pre-reader letterform requirement.
+- **Games added:** `pop` (balloon pop, letter/number recognition) and `feed`
+  (feed-the-animal: vocabulary, initial sounds, quantity, colors) scene types.
+- **Structured learning:** 30-step ordered path (`content/path.json`) with
+  sequential unlock, winding-trail map screen, and stars. Free-choice areas
+  remain.
+- **Directions:** every activity now opens with an instruction overlay (icon +
+  text + voice) and a persistent 🔊 replay button; the GO tap doubles as the
+  iOS audio-unlock gesture.

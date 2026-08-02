@@ -80,16 +80,32 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
           : 'rgba(0,0,0,0.07)';                                        // upcoming
         gctx.stroke();
       });
-      // start dot + guide dot on current stroke
+      // demo trail: the current stroke draws itself over and over ("watch me!")
       const s = g.strokes[st.si];
       if (s) {
+        const idx = Math.max(1, Math.floor(guideT * (s.points.length - 1)));
+        gctx.beginPath();
+        for (let j = 0; j <= idx; j++) {
+          const [x, y] = s.points[j];
+          if (j === 0) gctx.moveTo(x, y); else gctx.lineTo(x, y);
+        }
+        gctx.lineWidth = 18;
+        gctx.lineCap = 'round';
+        gctx.lineJoin = 'round';
+        gctx.strokeStyle = 'rgba(91,79,233,0.55)';
+        gctx.stroke();
+        // start dot
         const [sx, sy] = s.points[0];
-        gctx.beginPath(); gctx.arc(sx, sy, 20, 0, Math.PI * 2);
+        gctx.beginPath(); gctx.arc(sx, sy, 22, 0, Math.PI * 2);
         gctx.fillStyle = '#06D6A0'; gctx.fill();
-        const idx = Math.floor(guideT * (s.points.length - 1));
+        gctx.beginPath(); gctx.arc(sx, sy, 22, 0, Math.PI * 2);
+        gctx.lineWidth = 5; gctx.strokeStyle = '#FFF'; gctx.stroke();
+        // guide dot at the moving tip
         const [dx, dy] = s.points[idx];
-        gctx.beginPath(); gctx.arc(dx, dy, 12, 0, Math.PI * 2);
-        gctx.fillStyle = 'rgba(255,107,107,0.9)'; gctx.fill();
+        gctx.beginPath(); gctx.arc(dx, dy, 14, 0, Math.PI * 2);
+        gctx.fillStyle = '#FF6B6B'; gctx.fill();
+        gctx.beginPath(); gctx.arc(dx, dy, 14, 0, Math.PI * 2);
+        gctx.lineWidth = 4; gctx.strokeStyle = '#FFF'; gctx.stroke();
       }
     }
 
@@ -119,7 +135,7 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
           st.gi += 1; st.si = 0;
           setGi(st.gi); setSi(0);
           const next = glyphs![st.gi];
-          setTimeout(() => speak(`Now trace ${next.label}. ${next.strokes[0].hint}`), 700);
+          setTimeout(() => speak(`Now trace ${next.label}! ${next.strokes[0].hint}`), 700);
         } else {
           if (params.celebrateWord) setTimeout(() => speak(`You wrote ${params.celebrateWord}!`), 600);
           setTimeout(() => onComplete({ assisted: st.assisted }), 900);
@@ -159,7 +175,7 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
     });
 
     const first = glyphs[0];
-    if (first) speak(`Trace the ${activity.elofTags.subDomain === 'writing' && first.label.length === 1 && isNaN(Number(first.label)) ? 'letter' : ''} ${first.label}. ${first.strokes[0].hint}`);
+    if (first) speak(`Trace ${first.label}! ${first.strokes[0].hint}`);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -175,6 +191,13 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
   const total = glyphs?.length ?? 1;
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
+      {/* paper panel behind the letter */}
+      <div style={{
+        position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
+        width: 'calc(560 * var(--lu))', height: 'calc(600 * var(--lu))',
+        background: '#FFFFFF', borderRadius: 'calc(40 * var(--lu))',
+        boxShadow: '0 calc(10 * var(--lu)) 0 rgba(0,0,0,0.08)',
+      }} />
       <div ref={hostRef} style={{ position: 'absolute', inset: 0 }} />
       <div style={{ position: 'absolute', top: 'calc(24 * var(--lu))', left: 0, right: 0, pointerEvents: 'none' }}>
         {total > 1 && <Dots total={total} done={gi} />}

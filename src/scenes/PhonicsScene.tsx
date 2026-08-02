@@ -21,27 +21,18 @@ function roundsFor(params: Record<string, unknown>): RoundSpec[] {
   const rung = params.rung as string;
   const items = params.items as Record<string, unknown>[];
   return items.map((it) => {
-    switch (rung) {
-      case 'compound':
-        return { say: `${it.a as string}. ${it.b as string}. What word do they make?`, answer: { icon: it.icon as string, word: it.word as string }, wrong: (it.wrong as string[]).map((w) => ({ icon: w })) };
-      case 'syllable': {
-        const w = it.word as string, n = it.syllables as number;
-        const others = [1, 2, 3].filter((x) => x !== n);
-        return { say: `Clap it with me. ${w}. How many claps?`, answer: { icon: String(n), word: w }, wrong: others.map((o) => ({ icon: String(o) })) };
-      }
-      case 'rhyme': {
-        const a = it.answer as Choice;
-        return { say: `What rhymes with ${it.word as string}?`, answer: a, wrong: it.wrong as Choice[] };
-      }
-      case 'alliteration': {
-        const a = it.answer as Choice;
-        return { say: `Which one starts with ${it.sound as string}, like the letter ${it.letter as string}?`, answer: a, wrong: it.wrong as Choice[] };
-      }
-      case 'onset-rime':
-        return { say: `${it.onset as string}. ${it.rime as string}. What word?`, scaffold: [it.onset as string, it.rime as string], answer: { icon: it.icon as string, word: it.word as string }, wrong: (it.wrong as string[]).map((w) => ({ icon: w })) };
-      default: // phoneme — visual scaffold required at this rung (S22)
-        return { say: (it.phonemes as string[]).join('. ') + '. What word?', scaffold: it.phonemes as string[], answer: { icon: it.icon as string, word: it.word as string }, wrong: (it.wrong as string[]).map((w) => ({ icon: w })) };
+    const say = it.say as string;
+    const scaffold = it.scaffold as string[] | undefined;
+    if (rung === 'syllable') {
+      const n = it.syllables as number;
+      const others = [1, 2, 3].filter((x) => x !== n);
+      return { say, answer: { icon: String(n), word: it.word as string }, wrong: others.map((o) => ({ icon: String(o) })) };
     }
+    if (rung === 'rhyme' || rung === 'alliteration') {
+      return { say, answer: it.answer as Choice, wrong: it.wrong as Choice[] };
+    }
+    // compound / onset-rime / phoneme: answer is the item's own icon+word
+    return { say, scaffold, answer: { icon: it.icon as string, word: it.word as string }, wrong: (it.wrong as string[]).map((w) => ({ icon: w })) };
   });
 }
 

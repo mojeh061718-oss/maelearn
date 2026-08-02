@@ -11,7 +11,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icons/*.png'],
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,svg,json,webmanifest}'],
+        globPatterns: ['**/*.{js,css,html,png,svg,json,webmanifest,mp3,woff2}'],
         // Everything is precached; no runtime network requests (BLUEPRINT §10).
         navigateFallback: '/maelearn/index.html',
       },

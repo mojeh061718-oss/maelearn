@@ -2,7 +2,7 @@
 // background. Particle bursts on a dedicated overlay canvas; short-lived,
 // event-triggered only.
 
-import { getViewport, fitCanvas, applyLogicalTransform, onViewportChange } from '../core/viewport';
+import { getViewport, fitCanvasToBody, applyLogicalTransform, onViewportChange } from '../core/viewport';
 
 interface Particle {
   x: number; y: number; vx: number; vy: number;
@@ -24,10 +24,10 @@ function ensure(): void {
   document.body.appendChild(canvas);
   ctx = canvas.getContext('2d');
   const vp = getViewport();
-  fitCanvas(canvas, vp);
+  fitCanvasToBody(canvas, vp);
   if (ctx) applyLogicalTransform(ctx, vp);
   onViewportChange((v) => {
-    if (canvas && ctx) { fitCanvas(canvas, v); applyLogicalTransform(ctx, v); }
+    if (canvas && ctx) { fitCanvasToBody(canvas, v); applyLogicalTransform(ctx, v); }
   });
 }
 

@@ -3,18 +3,15 @@
 //   subitize:  brief flash, pick how many (PK4 target: to 6)
 //   rote:      guided count along 1..30, next number glows
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { SceneProps } from './shared';
-import { shuffle } from './shared';
+import { NUM_WORDS, art, shuffle } from './shared';
 import { playSfx, speak } from '../core/audio';
 import { burstAtElement } from '../ui/juice';
 import { BigButton } from '../ui/common';
 
-interface CountParams { mode: 'tap-count' | 'subitize' | 'rote'; target: number; icon?: string }
+interface CountParams { mode: 'tap-count' | 'subitize' | 'rote'; target: number; icon?: string; img?: string | null; theme?: string | null }
 
-const NUM_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
-  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty',
-  'twenty one', 'twenty two', 'twenty three', 'twenty four', 'twenty five', 'twenty six', 'twenty seven', 'twenty eight', 'twenty nine', 'thirty'];
 
 export default function CountScene(props: SceneProps) {
   const { mode } = props.activity.params as CountParams;
@@ -39,7 +36,7 @@ function scatter(n: number): { x: number; y: number }[] {
 }
 
 function TapCount({ activity, onComplete, onMiss }: SceneProps) {
-  const { target, icon = '🐠' } = activity.params as CountParams;
+  const { target, icon = '🐠', img, theme } = activity.params as CountParams;
   const [positions] = useState(() => scatter(target));
   const [tapped, setTapped] = useState<Set<number>>(new Set());
   const [phase, setPhase] = useState<'count' | 'pick'>('count');
@@ -48,8 +45,6 @@ function TapCount({ activity, onComplete, onMiss }: SceneProps) {
     while (c.size < 3) c.add(Math.max(1, target + Math.floor(Math.random() * 5) - 2));
     return shuffle([...c]);
   });
-  const spoken = useRef(false);
-  if (!spoken.current) { spoken.current = true; setTimeout(() => speak(`Tap each ${icon === '🐠' ? 'fish' : 'one'} and count with me!`), 300); }
 
   function tapObj(i: number, el: HTMLElement): void {
     if (tapped.has(i) || phase !== 'count') return;
@@ -63,6 +58,14 @@ function TapCount({ activity, onComplete, onMiss }: SceneProps) {
 
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
+      {theme === 'underwater' && (
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.9 }}>
+          <img src={art('background_seaweed_a.png')} alt="" style={{ position: 'absolute', bottom: 0, left: '8%', height: 'calc(160 * var(--lu))' }} />
+          <img src={art('background_seaweed_b.png')} alt="" style={{ position: 'absolute', bottom: 0, right: '10%', height: 'calc(130 * var(--lu))' }} />
+          <img src={art('bubble_a.png')} alt="" style={{ position: 'absolute', top: '18%', right: '20%', width: 'calc(30 * var(--lu))' }} />
+          <img src={art('bubble_b.png')} alt="" style={{ position: 'absolute', top: '32%', left: '16%', width: 'calc(22 * var(--lu))' }} />
+        </div>
+      )}
       {positions.map((p, i) => (
         <div key={i} onClick={(e) => tapObj(i, e.currentTarget)}
           style={{
@@ -73,7 +76,7 @@ function TapCount({ activity, onComplete, onMiss }: SceneProps) {
             transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
             cursor: 'pointer', touchAction: 'none',
           }}>
-          {icon}
+          {img ? <img src={art(img)} alt="" draggable={false} style={{ width: 'calc(110 * var(--lu))', pointerEvents: 'none' }} /> : icon}
           {tapped.has(i) && (
             <span style={{
               position: 'absolute', top: '-30%', left: '50%', transform: 'translateX(-50%)',
@@ -145,8 +148,6 @@ function Subitize({ activity, onComplete, onMiss }: SceneProps) {
 function Rote({ activity, onComplete }: SceneProps) {
   const { target } = activity.params as CountParams;
   const [next, setNext] = useState(1);
-  const spoken = useRef(false);
-  if (!spoken.current) { spoken.current = true; setTimeout(() => speak('Count to thirty! Tap the glowing number!'), 300); }
 
   return (
     <div style={{

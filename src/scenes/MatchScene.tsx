@@ -1,9 +1,9 @@
 // Match scene — minds-on pairing (research S23): letter↔sound, upper↔lower,
 // numeral↔quantity. Tap one from each side; matches fly away.
 
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { SceneProps } from './shared';
-import { LETTER_SOUNDS, shuffle } from './shared';
+import { LETTER_SOUNDS, NUM_WORDS, shuffle } from './shared';
 import { playSfx, speak } from '../core/audio';
 import { burstAtElement } from '../ui/juice';
 
@@ -18,11 +18,10 @@ interface CardDef { key: string; face: string; speakOnTap?: string; small?: bool
 export default function MatchScene({ activity, onComplete, onMiss }: SceneProps) {
   const params = activity.params as MatchParams;
 
-  const { left, right, prompt } = useMemo(() => {
+  const { left, right } = useMemo(() => {
     if (params.mode === 'letter-sound') {
       const ls = params.letters!;
       return {
-        prompt: 'Tap a sound, then tap its letter!',
         left: ls.map((L): CardDef => ({ key: L, face: '🔊', speakOnTap: `${LETTER_SOUNDS[L]}. ${LETTER_SOUNDS[L]}.` })),
         right: shuffle(ls.map((L): CardDef => ({ key: L, face: L }))),
       };
@@ -30,15 +29,13 @@ export default function MatchScene({ activity, onComplete, onMiss }: SceneProps)
     if (params.mode === 'case') {
       const ls = params.letters!;
       return {
-        prompt: 'Match the big letter to the small letter!',
         left: ls.map((L): CardDef => ({ key: L, face: L, speakOnTap: `Big ${L}` })),
         right: shuffle(ls.map((L): CardDef => ({ key: L, face: L.toLowerCase(), speakOnTap: `small ${L}` }))),
       };
     }
     const ns = params.numbers!;
     return {
-      prompt: 'Match the number to how many!',
-      left: ns.map((n): CardDef => ({ key: String(n), face: String(n), speakOnTap: String(n) })),
+      left: ns.map((n): CardDef => ({ key: String(n), face: String(n), speakOnTap: NUM_WORDS[n] })),
       right: shuffle(ns.map((n): CardDef => ({ key: String(n), face: '🍎'.repeat(n), small: true }))),
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,8 +44,6 @@ export default function MatchScene({ activity, onComplete, onMiss }: SceneProps)
   const [sel, setSel] = useState<{ side: 'L' | 'R'; key: string; el: HTMLElement } | null>(null);
   const [matched, setMatched] = useState<Set<string>>(new Set());
   const [wrongKey, setWrongKey] = useState<string | null>(null);
-  const spoken = useRef(false);
-  if (!spoken.current) { spoken.current = true; setTimeout(() => speak(prompt), 300); }
 
   function tap(side: 'L' | 'R', card: CardDef, el: HTMLElement): void {
     if (matched.has(card.key + side)) return;

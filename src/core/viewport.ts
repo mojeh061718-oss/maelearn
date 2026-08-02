@@ -50,13 +50,25 @@ export function onViewportChange(l: Listener): () => void {
   return () => listeners.delete(l);
 }
 
-/** Size a canvas's backing store + CSS box to exactly cover the logical stage. */
+/**
+ * Size a canvas's backing store + CSS box to exactly cover the logical stage.
+ * IMPORTANT: canvases live INSIDE the stage container, which is already
+ * positioned at (offsetX, offsetY) — so the canvas itself sits at 0,0.
+ * Applying the offset here too shifts ink away from the finger (the M0.5 bug).
+ */
 export function fitCanvas(canvas: HTMLCanvasElement, vp: Viewport): void {
   canvas.width = Math.round(LOGICAL_W * vp.scale * vp.dpr);
   canvas.height = Math.round(LOGICAL_H * vp.scale * vp.dpr);
   canvas.style.width = `${vp.cssW}px`;
   canvas.style.height = `${vp.cssH}px`;
   canvas.style.position = 'absolute';
+  canvas.style.left = '0px';
+  canvas.style.top = '0px';
+}
+
+/** Same, but for a canvas attached to document.body (e.g. the particle layer). */
+export function fitCanvasToBody(canvas: HTMLCanvasElement, vp: Viewport): void {
+  fitCanvas(canvas, vp);
   canvas.style.left = `${vp.offsetX}px`;
   canvas.style.top = `${vp.offsetY}px`;
 }

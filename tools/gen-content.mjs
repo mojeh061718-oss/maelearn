@@ -181,7 +181,7 @@ acts.push(
   id: `count-tap-${n}`, title: `Count ${n}`, icon: '👆', sceneType: 'count',
   elofTags: math('counting', 'one-to-one'),
   difficulty: i < 2 ? 1 : 2,
-  params: { mode: 'tap-count', target: n, icon: ['🐠', '🦆', '🍎', '⭐'][i] },
+  params: { mode: 'tap-count', target: n, icon: ['🐠', '🦆', '🍎', '⭐'][i], img: ['fish_blue.png', null, null, 'fish_orange.png'][i], theme: ['underwater', null, null, 'underwater'][i] },
 }));
 [3, 4, 5, 6].forEach((n, i) => acts.push({
   id: `count-subitize-${n}`, title: 'Quick Look', icon: '👀', sceneType: 'count',
@@ -213,17 +213,17 @@ acts.push(
 // phonics — ladder order enforced by rung index (§7)
 acts.push(
   { id: 'phonics-compound-1', title: 'Word+Word', icon: '🧩', sceneType: 'phonics', elofTags: lit('phonological', 'compound-words'), difficulty: 1,
-    params: { rung: 'compound', items: [{ a: 'cup', b: 'cake', word: 'cupcake', icon: '🧁', wrong: ['🐶', '🌙'] }, { a: 'rain', b: 'bow', word: 'rainbow', icon: '🌈', wrong: ['🍎', '🚗'] }, { a: 'star', b: 'fish', word: 'starfish', icon: '⭐', wrong: ['🐸', '🎩'] }] } },
+    params: { rung: 'compound', items: [{ say: 'Cup. Cake. What word do they make?', word: 'cupcake', icon: '🧁', wrong: ['🐶', '🌙'] }, { say: 'Rain. Bow. What word do they make?', word: 'rainbow', icon: '🌈', wrong: ['🍎', '🚗'] }, { say: 'Star. Fish. What word do they make?', word: 'starfish', icon: '⭐', wrong: ['🐸', '🎩'] }] } },
   { id: 'phonics-syllable-1', title: 'Clap It', icon: '👏', sceneType: 'phonics', elofTags: lit('phonological', 'syllables'), difficulty: 2,
-    params: { rung: 'syllable', items: [{ word: 'apple', syllables: 2, icon: '🍎' }, { word: 'banana', syllables: 3, icon: '🍌' }, { word: 'dog', syllables: 1, icon: '🐶' }, { word: 'butterfly', syllables: 3, icon: '🦋' }] } },
+    params: { rung: 'syllable', items: [{ say: 'Clap it with me. Ap. Ple. How many claps?', word: 'apple', syllables: 2, icon: '🍎' }, { say: 'Clap it with me. Ba. Na. Na. How many claps?', word: 'banana', syllables: 3, icon: '🍌' }, { say: 'Clap it with me. Dog. How many claps?', word: 'dog', syllables: 1, icon: '🐶' }, { say: 'Clap it with me. But. Ter. Fly. How many claps?', word: 'butterfly', syllables: 3, icon: '🦋' }] } },
   { id: 'phonics-rhyme-1', title: 'Rhymes', icon: '🎵', sceneType: 'phonics', elofTags: lit('phonological', 'rhyme'), difficulty: 2,
-    params: { rung: 'rhyme', items: [{ word: 'cat', icon: '🐱', answer: { word: 'hat', icon: '🎩' }, wrong: [{ word: 'sun', icon: '☀️' }, { word: 'car', icon: '🚗' }] }, { word: 'dog', icon: '🐶', answer: { word: 'frog', icon: '🐸' }, wrong: [{ word: 'moon', icon: '🌙' }, { word: 'fish', icon: '🐟' }] }, { word: 'star', icon: '⭐', answer: { word: 'car', icon: '🚗' }, wrong: [{ word: 'ball', icon: '⚽' }, { word: 'cake', icon: '🍰' }] }] } },
+    params: { rung: 'rhyme', items: [{ say: 'What rhymes with cat?', word: 'cat', icon: '🐱', answer: { word: 'hat', icon: '🎩' }, wrong: [{ word: 'sun', icon: '☀️' }, { word: 'car', icon: '🚗' }] }, { say: 'What rhymes with dog?', word: 'dog', icon: '🐶', answer: { word: 'frog', icon: '🐸' }, wrong: [{ word: 'moon', icon: '🌙' }, { word: 'fish', icon: '🐟' }] }, { say: 'What rhymes with star?', word: 'star', icon: '⭐', answer: { word: 'car', icon: '🚗' }, wrong: [{ word: 'ball', icon: '⚽' }, { word: 'cake', icon: '🍰' }] }] } },
   { id: 'phonics-allit-1', title: 'Same Start', icon: '🅜', sceneType: 'phonics', elofTags: lit('phonological', 'alliteration'), difficulty: 3,
-    params: { rung: 'alliteration', items: [{ sound: 'mmm', letter: 'M', answer: { word: 'moon', icon: '🌙' }, wrong: [{ word: 'sun', icon: '☀️' }, { word: 'ball', icon: '⚽' }] }, { sound: 'sss', letter: 'S', answer: { word: 'snake', icon: '🐍' }, wrong: [{ word: 'cat', icon: '🐱' }, { word: 'tree', icon: '🌳' }] }] } },
+    params: { rung: 'alliteration', items: [{ say: 'Which one starts with mmm, like the letter M?', answer: { word: 'moon', icon: '🌙' }, wrong: [{ word: 'sun', icon: '☀️' }, { word: 'ball', icon: '⚽' }] }, { say: 'Which one starts with sss, like the letter S?', answer: { word: 'snake', icon: '🐍' }, wrong: [{ word: 'cat', icon: '🐱' }, { word: 'tree', icon: '🌳' }] }] } },
   { id: 'phonics-onset-1', title: 'Word Parts', icon: '🔗', sceneType: 'phonics', elofTags: lit('phonological', 'onset-rime'), difficulty: 4,
-    params: { rung: 'onset-rime', items: [{ onset: 'c', rime: 'at', word: 'cat', icon: '🐱', wrong: ['🐶', '☀️'] }, { onset: 'd', rime: 'og', word: 'dog', icon: '🐶', wrong: ['🎩', '🌙'] }] } },
+    params: { rung: 'onset-rime', items: [{ say: 'Kuh. At. What word?', scaffold: ['c', 'at'], word: 'cat', icon: '🐱', wrong: ['🐶', '☀️'] }, { say: 'Duh. Og. What word?', scaffold: ['d', 'og'], word: 'dog', icon: '🐶', wrong: ['🎩', '🌙'] }] } },
   { id: 'phonics-phoneme-1', title: 'Blend It', icon: '🎶', sceneType: 'phonics', elofTags: lit('phonological', 'phoneme-blend'), difficulty: 5,
-    params: { rung: 'phoneme', items: [{ phonemes: ['s', 'u', 'n'], word: 'sun', icon: '☀️', wrong: ['🌙', '🐟'] }, { phonemes: ['c', 'a', 't'], word: 'cat', icon: '🐱', wrong: ['🐸', '🚗'] }] } },
+    params: { rung: 'phoneme', items: [{ say: 'Sss. Uh. Nnn. What word?', scaffold: ['s', 'u', 'n'], word: 'sun', icon: '☀️', wrong: ['🌙', '🐟'] }, { say: 'Kuh. Ah. Tuh. What word?', scaffold: ['c', 'a', 't'], word: 'cat', icon: '🐱', wrong: ['🐸', '🚗'] }] } },
 );
 
 // shape
@@ -236,6 +236,55 @@ acts.push(
     params: { rounds: [{ name: 'sphere', kind: 'sphere' }, { name: 'cube', kind: 'cube' }] } },
 );
 
+// ---- GAMES ----
+// pop: balloons float up; pop the ones with the target letter/number
+const popDefs = [
+  ['M', ['S', 'O', 'T']], ['A', ['M', 'E', 'B']], ['E', ['F', 'L', 'A']], ['S', ['M', 'C', 'O']],
+];
+popDefs.forEach(([target, decoys], i) => acts.push({
+  id: `pop-letter-${target}`, title: `Pop ${target}`, icon: '🎈', sceneType: 'pop',
+  elofTags: lit('print-alphabet', 'letter-recognition'),
+  difficulty: i < 2 ? 1 : 2,
+  params: { kind: 'letter', target, decoys, need: 4, say: `Pop the balloons with the letter ${target}!` },
+}));
+[[3, [1, 5, 8]], [5, [2, 3, 9]]].forEach(([target, decoys], i) => acts.push({
+  id: `pop-number-${target}`, title: `Pop ${target}`, icon: '🎈', sceneType: 'pop',
+  elofTags: math('counting', 'numeral-recognition'),
+  difficulty: 1 + i,
+  params: { kind: 'number', target: String(target), decoys: decoys.map(String), need: 4, say: `Pop the balloons with the number ${target}!` },
+}));
+// feed: drag the right thing to a hungry animal
+acts.push(
+  { id: 'feed-monkey', title: 'Feed Momo', icon: '🐵', sceneType: 'feed',
+    elofTags: { domain: 'language', subDomain: 'vocabulary', goal: 'word-picture' }, difficulty: 1,
+    params: { animal: 'animal_monkey.png', name: 'Momo', rounds: [
+      { say: 'Momo the monkey wants the banana!', answer: { icon: '🍌' }, wrong: [{ icon: '🚗' }, { icon: '🎩' }] },
+      { say: 'Momo the monkey wants the ball!', answer: { icon: '⚽' }, wrong: [{ icon: '🍎' }, { icon: '🌙' }] },
+      { say: 'Momo the monkey wants the strawberry!', answer: { icon: '🍓' }, wrong: [{ icon: '🧦' }, { icon: '🚂' }] },
+    ] } },
+  { id: 'feed-panda', title: 'Feed Pip', icon: '🐼', sceneType: 'feed',
+    elofTags: lit('phonological', 'initial-sound'), difficulty: 2,
+    params: { animal: 'animal_panda.png', name: 'Pip', rounds: [
+      { say: 'Pip the panda wants something that starts with mmm!', answer: { icon: '🌙', word: 'moon' }, wrong: [{ icon: '☀️' }, { icon: '🚗' }] },
+      { say: 'Pip the panda wants something that starts with sss!', answer: { icon: '🧦', word: 'sock' }, wrong: [{ icon: '🍌' }, { icon: '🎩' }] },
+      { say: 'Pip the panda wants something that starts with buh!', answer: { icon: '⚽', word: 'ball' }, wrong: [{ icon: '🌙' }, { icon: '🍓' }] },
+    ] } },
+  { id: 'feed-elephant', title: 'Feed Ellie', icon: '🐘', sceneType: 'feed',
+    elofTags: math('counting', 'quantity'), difficulty: 2,
+    params: { animal: 'animal_elephant.png', name: 'Ellie', rounds: [
+      { say: 'Ellie the elephant wants two apples!', answer: { icon: '🍎🍎' }, wrong: [{ icon: '🍎' }, { icon: '🍎🍎🍎' }] },
+      { say: 'Ellie the elephant wants three cookies!', answer: { icon: '🍪🍪🍪' }, wrong: [{ icon: '🍪' }, { icon: '🍪🍪' }] },
+      { say: 'Ellie the elephant wants one cake!', answer: { icon: '🍰' }, wrong: [{ icon: '🍰🍰' }, { icon: '🍰🍰🍰' }] },
+    ] } },
+  { id: 'feed-rabbit', title: 'Feed Rosie', icon: '🐰', sceneType: 'feed',
+    elofTags: math('measurement', 'color-id'), difficulty: 1,
+    params: { animal: 'animal_rabbit.png', name: 'Rosie', rounds: [
+      { say: 'Rosie the rabbit wants something red!', answer: { icon: '🍓', word: 'red' }, wrong: [{ icon: '🫐' }, { icon: '🍌' }] },
+      { say: 'Rosie the rabbit wants something yellow!', answer: { icon: '🍌', word: 'yellow' }, wrong: [{ icon: '🍎' }, { icon: '🥦' }] },
+      { say: 'Rosie the rabbit wants something green!', answer: { icon: '🥦', word: 'green' }, wrong: [{ icon: '🍓' }, { icon: '🫐' }] },
+    ] } },
+);
+
 // freedraw — no scoring, no completion (§7)
 acts.push({
   id: 'freedraw', title: 'Draw', icon: '🖍️', sceneType: 'freedraw',
@@ -244,7 +293,48 @@ acts.push({
   params: { palette: ['#E4572E', '#F3A712', '#5BC0EB', '#9BC53D', '#9B5DE5', '#3D348B', '#212121'], stamps: ['⭐', '🌸', '🦋', '🌈', '💛'] },
 });
 
+// ---- per-activity spoken instruction (played by the pre-activity overlay) ----
+const INSTRUCTIONS = {
+  trace: 'Use your finger to trace! Start at the green dot and follow the little red dot.',
+  match: 'Tap two cards that go together!',
+  sort: 'Drag each one into its box!',
+  count: 'Tap each one and count with me!',
+  pattern: 'Look at the pattern. What comes next?',
+  phonics: 'Listen with your ears, then tap the right picture!',
+  shape: 'Find the shape I say!',
+  freedraw: 'Draw anything you like! Tap a color to change your crayon.',
+  pop: 'Pop the balloons I say! Ready?',
+  feed: 'Oh no, someone is hungry! Drag the right food to their mouth!',
+};
+for (const a of acts) {
+  if (a.sceneType === 'count') {
+    const m = a.params.mode;
+    a.instruction = m === 'subitize' ? 'Look quick, then tap how many you saw!'
+      : m === 'rote' ? 'Tap the glowing numbers and count all the way to thirty!'
+      : INSTRUCTIONS.count;
+  } else if (a.sceneType === 'pattern') {
+    const m = a.params.mode;
+    a.instruction = m === 'duplicate' ? 'Copy the pattern!' : m === 'create' ? 'Make your very own pattern!' : INSTRUCTIONS.pattern;
+  } else {
+    a.instruction = INSTRUCTIONS[a.sceneType];
+  }
+}
+
+// ---- structured learning path (ABCmouse-style ordered curriculum) ----
+const path = [
+  'trace-UM', 'pop-letter-M', 'count-tap-3', 'trace-UA', 'match-sound-1',
+  'sort-color-1', 'trace-N1', 'feed-rabbit', 'pattern-ab-1', 'trace-UE',
+  'count-tap-5', 'shape-2d-1', 'pop-letter-A', 'trace-UL', 'phonics-compound-1',
+  'match-qty-1', 'trace-UI', 'feed-monkey', 'count-subitize-3', 'sort-size-1',
+  'trace-US', 'phonics-syllable-1', 'pop-number-3', 'pattern-dup-1', 'match-case-1',
+  'feed-elephant', 'trace-UT', 'count-rote-30', 'feed-panda', 'trace-name',
+];
+const ids = new Set(acts.map((a) => a.id));
+const missing = path.filter((id) => !ids.has(id));
+if (missing.length) throw new Error(`path references unknown activities: ${missing}`);
+
 mkdirSync('public/content', { recursive: true });
 writeFileSync('public/content/glyphs.json', JSON.stringify(glyphs));
 writeFileSync('public/content/activities.json', JSON.stringify(acts, null, 1));
-console.log(`glyphs: ${Object.keys(glyphs).length}, activities: ${acts.length}`);
+writeFileSync('public/content/path.json', JSON.stringify(path, null, 1));
+console.log(`glyphs: ${Object.keys(glyphs).length}, activities: ${acts.length}, path: ${path.length}`);
