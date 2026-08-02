@@ -1,0 +1,1860 @@
+[
+ {
+  "id": "trace-UM",
+  "title": "M",
+  "icon": "M",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "UM"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UA",
+  "title": "A",
+  "icon": "A",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "UA"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UE",
+  "title": "E",
+  "icon": "E",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "UE"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UL",
+  "title": "L",
+  "icon": "L",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "UL"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UI",
+  "title": "I",
+  "icon": "I",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "UI"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-US",
+  "title": "S",
+  "icon": "S",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "US"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UT",
+  "title": "T",
+  "icon": "T",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "UT"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UO",
+  "title": "O",
+  "icon": "O",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "UO"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UP",
+  "title": "P",
+  "icon": "P",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "UP"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UC",
+  "title": "C",
+  "icon": "C",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "UC"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UN",
+  "title": "N",
+  "icon": "N",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "UN"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UB",
+  "title": "B",
+  "icon": "B",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "UB"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UD",
+  "title": "D",
+  "icon": "D",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "UD"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UF",
+  "title": "F",
+  "icon": "F",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "UF"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UG",
+  "title": "G",
+  "icon": "G",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "UG"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UH",
+  "title": "H",
+  "icon": "H",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "UH"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UJ",
+  "title": "J",
+  "icon": "J",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 3,
+  "params": {
+   "glyphIds": [
+    "UJ"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UK",
+  "title": "K",
+  "icon": "K",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 3,
+  "params": {
+   "glyphIds": [
+    "UK"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UQ",
+  "title": "Q",
+  "icon": "Q",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 3,
+  "params": {
+   "glyphIds": [
+    "UQ"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UR",
+  "title": "R",
+  "icon": "R",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 3,
+  "params": {
+   "glyphIds": [
+    "UR"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UU",
+  "title": "U",
+  "icon": "U",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 3,
+  "params": {
+   "glyphIds": [
+    "UU"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UV",
+  "title": "V",
+  "icon": "V",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 3,
+  "params": {
+   "glyphIds": [
+    "UV"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UW",
+  "title": "W",
+  "icon": "W",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 3,
+  "params": {
+   "glyphIds": [
+    "UW"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UX",
+  "title": "X",
+  "icon": "X",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 3,
+  "params": {
+   "glyphIds": [
+    "UX"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UY",
+  "title": "Y",
+  "icon": "Y",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 3,
+  "params": {
+   "glyphIds": [
+    "UY"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-UZ",
+  "title": "Z",
+  "icon": "Z",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "trace-letters"
+  },
+  "difficulty": 3,
+  "params": {
+   "glyphIds": [
+    "UZ"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-N0",
+  "title": "0",
+  "icon": "0",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "write-numerals"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "U0"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-N1",
+  "title": "1",
+  "icon": "1",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "write-numerals"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "U1"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-N2",
+  "title": "2",
+  "icon": "2",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "write-numerals"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "U2"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-N3",
+  "title": "3",
+  "icon": "3",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "write-numerals"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "U3"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-N4",
+  "title": "4",
+  "icon": "4",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "write-numerals"
+  },
+  "difficulty": 1,
+  "params": {
+   "glyphIds": [
+    "U4"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-N5",
+  "title": "5",
+  "icon": "5",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "write-numerals"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "U5"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-N6",
+  "title": "6",
+  "icon": "6",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "write-numerals"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "U6"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-N7",
+  "title": "7",
+  "icon": "7",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "write-numerals"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "U7"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-N8",
+  "title": "8",
+  "icon": "8",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "write-numerals"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "U8"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-N9",
+  "title": "9",
+  "icon": "9",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "write-numerals"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "U9"
+   ],
+   "speakEach": true
+  }
+ },
+ {
+  "id": "trace-name",
+  "title": "My Name",
+  "icon": "💛",
+  "sceneType": "trace",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "writing",
+   "goal": "write-own-name"
+  },
+  "difficulty": 2,
+  "params": {
+   "glyphIds": [
+    "UM",
+    "UA",
+    "UE",
+    "UL",
+    "UI",
+    "UE"
+   ],
+   "speakEach": true,
+   "celebrateWord": "Maelie"
+  }
+ },
+ {
+  "id": "match-sound-1",
+  "title": "Sounds",
+  "icon": "🔊",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "print-alphabet",
+   "goal": "letter-sound"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "letter-sound",
+   "letters": [
+    "M",
+    "A",
+    "S",
+    "T"
+   ]
+  }
+ },
+ {
+  "id": "match-sound-2",
+  "title": "Sounds",
+  "icon": "🔊",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "print-alphabet",
+   "goal": "letter-sound"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "letter-sound",
+   "letters": [
+    "E",
+    "L",
+    "I",
+    "P"
+   ]
+  }
+ },
+ {
+  "id": "match-sound-3",
+  "title": "Sounds",
+  "icon": "🔊",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "print-alphabet",
+   "goal": "letter-sound"
+  },
+  "difficulty": 3,
+  "params": {
+   "mode": "letter-sound",
+   "letters": [
+    "C",
+    "N",
+    "B",
+    "D"
+   ]
+  }
+ },
+ {
+  "id": "match-sound-4",
+  "title": "Sounds",
+  "icon": "🔊",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "print-alphabet",
+   "goal": "letter-sound"
+  },
+  "difficulty": 3,
+  "params": {
+   "mode": "letter-sound",
+   "letters": [
+    "F",
+    "G",
+    "H",
+    "K"
+   ]
+  }
+ },
+ {
+  "id": "match-case-1",
+  "title": "Big+Small",
+  "icon": "🅰️",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "print-alphabet",
+   "goal": "upper-lower"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "case",
+   "letters": [
+    "A",
+    "B",
+    "D",
+    "E"
+   ]
+  }
+ },
+ {
+  "id": "match-case-2",
+  "title": "Big+Small",
+  "icon": "🅰️",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "print-alphabet",
+   "goal": "upper-lower"
+  },
+  "difficulty": 3,
+  "params": {
+   "mode": "case",
+   "letters": [
+    "G",
+    "H",
+    "M",
+    "N"
+   ]
+  }
+ },
+ {
+  "id": "match-case-3",
+  "title": "Big+Small",
+  "icon": "🅰️",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "print-alphabet",
+   "goal": "upper-lower"
+  },
+  "difficulty": 3,
+  "params": {
+   "mode": "case",
+   "letters": [
+    "Q",
+    "R",
+    "T",
+    "L"
+   ]
+  }
+ },
+ {
+  "id": "match-qty-1",
+  "title": "How Many",
+  "icon": "🎯",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "numeral-quantity"
+  },
+  "difficulty": 1,
+  "params": {
+   "mode": "numeral-quantity",
+   "numbers": [
+    1,
+    2,
+    3,
+    4
+   ]
+  }
+ },
+ {
+  "id": "match-qty-2",
+  "title": "How Many",
+  "icon": "🎯",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "numeral-quantity"
+  },
+  "difficulty": 1,
+  "params": {
+   "mode": "numeral-quantity",
+   "numbers": [
+    3,
+    4,
+    5,
+    6
+   ]
+  }
+ },
+ {
+  "id": "match-qty-3",
+  "title": "How Many",
+  "icon": "🎯",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "numeral-quantity"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "numeral-quantity",
+   "numbers": [
+    5,
+    6,
+    7,
+    8
+   ]
+  }
+ },
+ {
+  "id": "match-qty-4",
+  "title": "How Many",
+  "icon": "🎯",
+  "sceneType": "match",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "numeral-quantity"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "numeral-quantity",
+   "numbers": [
+    7,
+    8,
+    9,
+    10
+   ]
+  }
+ },
+ {
+  "id": "sort-color-1",
+  "title": "Colors",
+  "icon": "🎨",
+  "sceneType": "sort",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "measurement",
+   "goal": "sort-attributes"
+  },
+  "difficulty": 1,
+  "params": {
+   "criterion": "color",
+   "bins": [
+    {
+     "id": "red",
+     "label": "Red",
+     "icon": "🟥"
+    },
+    {
+     "id": "blue",
+     "label": "Blue",
+     "icon": "🟦"
+    }
+   ],
+   "items": [
+    {
+     "icon": "🍎",
+     "bin": "red"
+    },
+    {
+     "icon": "🫐",
+     "bin": "blue"
+    },
+    {
+     "icon": "🍓",
+     "bin": "red"
+    },
+    {
+     "icon": "🐳",
+     "bin": "blue"
+    },
+    {
+     "icon": "🌹",
+     "bin": "red"
+    },
+    {
+     "icon": "🦋",
+     "bin": "blue"
+    }
+   ]
+  }
+ },
+ {
+  "id": "sort-color-2",
+  "title": "Colors",
+  "icon": "🎨",
+  "sceneType": "sort",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "measurement",
+   "goal": "sort-attributes"
+  },
+  "difficulty": 2,
+  "params": {
+   "criterion": "color",
+   "bins": [
+    {
+     "id": "yellow",
+     "label": "Yellow",
+     "icon": "🟨"
+    },
+    {
+     "id": "green",
+     "label": "Green",
+     "icon": "🟩"
+    },
+    {
+     "id": "purple",
+     "label": "Purple",
+     "icon": "🟪"
+    }
+   ],
+   "items": [
+    {
+     "icon": "🍌",
+     "bin": "yellow"
+    },
+    {
+     "icon": "🐸",
+     "bin": "green"
+    },
+    {
+     "icon": "🍇",
+     "bin": "purple"
+    },
+    {
+     "icon": "⭐",
+     "bin": "yellow"
+    },
+    {
+     "icon": "🥦",
+     "bin": "green"
+    },
+    {
+     "icon": "☂️",
+     "bin": "purple"
+    },
+    {
+     "icon": "🌻",
+     "bin": "yellow"
+    },
+    {
+     "icon": "🥝",
+     "bin": "green"
+    }
+   ]
+  }
+ },
+ {
+  "id": "sort-size-1",
+  "title": "Sizes",
+  "icon": "🐘",
+  "sceneType": "sort",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "measurement",
+   "goal": "compare-size"
+  },
+  "difficulty": 1,
+  "params": {
+   "criterion": "size",
+   "bins": [
+    {
+     "id": "big",
+     "label": "Big",
+     "icon": "🐘"
+    },
+    {
+     "id": "small",
+     "label": "Small",
+     "icon": "🐭"
+    }
+   ],
+   "items": [
+    {
+     "icon": "🦕",
+     "bin": "big"
+    },
+    {
+     "icon": "🐜",
+     "bin": "small"
+    },
+    {
+     "icon": "🏔️",
+     "bin": "big"
+    },
+    {
+     "icon": "🐞",
+     "bin": "small"
+    },
+    {
+     "icon": "🐋",
+     "bin": "big"
+    },
+    {
+     "icon": "🌱",
+     "bin": "small"
+    }
+   ]
+  }
+ },
+ {
+  "id": "sort-shape-1",
+  "title": "Shapes",
+  "icon": "🔺",
+  "sceneType": "sort",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "geometry",
+   "goal": "sort-shapes"
+  },
+  "difficulty": 2,
+  "params": {
+   "criterion": "shape",
+   "bins": [
+    {
+     "id": "circle",
+     "label": "Circle",
+     "icon": "⚪"
+    },
+    {
+     "id": "square",
+     "label": "Square",
+     "icon": "⬜"
+    }
+   ],
+   "items": [
+    {
+     "icon": "🍪",
+     "bin": "circle"
+    },
+    {
+     "icon": "🎁",
+     "bin": "square"
+    },
+    {
+     "icon": "⚽",
+     "bin": "circle"
+    },
+    {
+     "icon": "📦",
+     "bin": "square"
+    },
+    {
+     "icon": "🕐",
+     "bin": "circle"
+    },
+    {
+     "icon": "🧇",
+     "bin": "square"
+    }
+   ]
+  }
+ },
+ {
+  "id": "sort-sound-1",
+  "title": "First Sound",
+  "icon": "👂",
+  "sceneType": "sort",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "phonological",
+   "goal": "alliteration"
+  },
+  "difficulty": 3,
+  "params": {
+   "criterion": "initial-sound",
+   "bins": [
+    {
+     "id": "m",
+     "label": "M",
+     "icon": "M"
+    },
+    {
+     "id": "s",
+     "label": "S",
+     "icon": "S"
+    }
+   ],
+   "items": [
+    {
+     "icon": "🌙",
+     "bin": "m",
+     "say": "moon"
+    },
+    {
+     "icon": "☀️",
+     "bin": "s",
+     "say": "sun"
+    },
+    {
+     "icon": "🐵",
+     "bin": "m",
+     "say": "monkey"
+    },
+    {
+     "icon": "🧦",
+     "bin": "s",
+     "say": "sock"
+    },
+    {
+     "icon": "🍄",
+     "bin": "m",
+     "say": "mushroom"
+    },
+    {
+     "icon": "⭐",
+     "bin": "s",
+     "say": "star"
+    }
+   ]
+  }
+ },
+ {
+  "id": "count-tap-3",
+  "title": "Count 3",
+  "icon": "👆",
+  "sceneType": "count",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "one-to-one"
+  },
+  "difficulty": 1,
+  "params": {
+   "mode": "tap-count",
+   "target": 3,
+   "icon": "🐠"
+  }
+ },
+ {
+  "id": "count-tap-5",
+  "title": "Count 5",
+  "icon": "👆",
+  "sceneType": "count",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "one-to-one"
+  },
+  "difficulty": 1,
+  "params": {
+   "mode": "tap-count",
+   "target": 5,
+   "icon": "🦆"
+  }
+ },
+ {
+  "id": "count-tap-7",
+  "title": "Count 7",
+  "icon": "👆",
+  "sceneType": "count",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "one-to-one"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "tap-count",
+   "target": 7,
+   "icon": "🍎"
+  }
+ },
+ {
+  "id": "count-tap-10",
+  "title": "Count 10",
+  "icon": "👆",
+  "sceneType": "count",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "one-to-one"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "tap-count",
+   "target": 10,
+   "icon": "⭐"
+  }
+ },
+ {
+  "id": "count-subitize-3",
+  "title": "Quick Look",
+  "icon": "👀",
+  "sceneType": "count",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "subitize"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "subitize",
+   "target": 3
+  }
+ },
+ {
+  "id": "count-subitize-4",
+  "title": "Quick Look",
+  "icon": "👀",
+  "sceneType": "count",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "subitize"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "subitize",
+   "target": 4
+  }
+ },
+ {
+  "id": "count-subitize-5",
+  "title": "Quick Look",
+  "icon": "👀",
+  "sceneType": "count",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "subitize"
+  },
+  "difficulty": 3,
+  "params": {
+   "mode": "subitize",
+   "target": 5
+  }
+ },
+ {
+  "id": "count-subitize-6",
+  "title": "Quick Look",
+  "icon": "👀",
+  "sceneType": "count",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "subitize"
+  },
+  "difficulty": 3,
+  "params": {
+   "mode": "subitize",
+   "target": 6
+  }
+ },
+ {
+  "id": "count-rote-30",
+  "title": "To 30",
+  "icon": "🚀",
+  "sceneType": "count",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "counting",
+   "goal": "rote-30"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "rote",
+   "target": 30
+  }
+ },
+ {
+  "id": "pattern-ab-1",
+  "title": "Pattern",
+  "icon": "🔴",
+  "sceneType": "pattern",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "algebraic",
+   "goal": "extend-pattern"
+  },
+  "difficulty": 1,
+  "params": {
+   "mode": "extend",
+   "unit": [
+    "🔴",
+    "🔵"
+   ],
+   "shown": 6,
+   "choices": [
+    "🔴",
+    "🔵"
+   ]
+  }
+ },
+ {
+  "id": "pattern-ab-2",
+  "title": "Pattern",
+  "icon": "🐶",
+  "sceneType": "pattern",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "algebraic",
+   "goal": "extend-pattern"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "extend",
+   "unit": [
+    "🐶",
+    "🐱"
+   ],
+   "shown": 6,
+   "choices": [
+    "🐶",
+    "🐱",
+    "🐭"
+   ]
+  }
+ },
+ {
+  "id": "pattern-abc-1",
+  "title": "Pattern",
+  "icon": "🍓",
+  "sceneType": "pattern",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "algebraic",
+   "goal": "extend-pattern"
+  },
+  "difficulty": 3,
+  "params": {
+   "mode": "extend",
+   "unit": [
+    "🍓",
+    "🍌",
+    "🍇"
+   ],
+   "shown": 7,
+   "choices": [
+    "🍓",
+    "🍌",
+    "🍇"
+   ]
+  }
+ },
+ {
+  "id": "pattern-dup-1",
+  "title": "Copy It",
+  "icon": "🟡",
+  "sceneType": "pattern",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "algebraic",
+   "goal": "duplicate-pattern"
+  },
+  "difficulty": 2,
+  "params": {
+   "mode": "duplicate",
+   "unit": [
+    "🟡",
+    "🟢"
+   ],
+   "shown": 4,
+   "choices": [
+    "🟡",
+    "🟢"
+   ]
+  }
+ },
+ {
+  "id": "pattern-create-1",
+  "title": "Make One",
+  "icon": "✨",
+  "sceneType": "pattern",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "algebraic",
+   "goal": "create-pattern"
+  },
+  "difficulty": 4,
+  "params": {
+   "mode": "create",
+   "unit": [],
+   "shown": 0,
+   "choices": [
+    "🔴",
+    "🔵",
+    "🟡"
+   ]
+  }
+ },
+ {
+  "id": "phonics-compound-1",
+  "title": "Word+Word",
+  "icon": "🧩",
+  "sceneType": "phonics",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "phonological",
+   "goal": "compound-words"
+  },
+  "difficulty": 1,
+  "params": {
+   "rung": "compound",
+   "items": [
+    {
+     "a": "cup",
+     "b": "cake",
+     "word": "cupcake",
+     "icon": "🧁",
+     "wrong": [
+      "🐶",
+      "🌙"
+     ]
+    },
+    {
+     "a": "rain",
+     "b": "bow",
+     "word": "rainbow",
+     "icon": "🌈",
+     "wrong": [
+      "🍎",
+      "🚗"
+     ]
+    },
+    {
+     "a": "star",
+     "b": "fish",
+     "word": "starfish",
+     "icon": "⭐",
+     "wrong": [
+      "🐸",
+      "🎩"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "phonics-syllable-1",
+  "title": "Clap It",
+  "icon": "👏",
+  "sceneType": "phonics",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "phonological",
+   "goal": "syllables"
+  },
+  "difficulty": 2,
+  "params": {
+   "rung": "syllable",
+   "items": [
+    {
+     "word": "apple",
+     "syllables": 2,
+     "icon": "🍎"
+    },
+    {
+     "word": "banana",
+     "syllables": 3,
+     "icon": "🍌"
+    },
+    {
+     "word": "dog",
+     "syllables": 1,
+     "icon": "🐶"
+    },
+    {
+     "word": "butterfly",
+     "syllables": 3,
+     "icon": "🦋"
+    }
+   ]
+  }
+ },
+ {
+  "id": "phonics-rhyme-1",
+  "title": "Rhymes",
+  "icon": "🎵",
+  "sceneType": "phonics",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "phonological",
+   "goal": "rhyme"
+  },
+  "difficulty": 2,
+  "params": {
+   "rung": "rhyme",
+   "items": [
+    {
+     "word": "cat",
+     "icon": "🐱",
+     "answer": {
+      "word": "hat",
+      "icon": "🎩"
+     },
+     "wrong": [
+      {
+       "word": "sun",
+       "icon": "☀️"
+      },
+      {
+       "word": "car",
+       "icon": "🚗"
+      }
+     ]
+    },
+    {
+     "word": "dog",
+     "icon": "🐶",
+     "answer": {
+      "word": "frog",
+      "icon": "🐸"
+     },
+     "wrong": [
+      {
+       "word": "moon",
+       "icon": "🌙"
+      },
+      {
+       "word": "fish",
+       "icon": "🐟"
+      }
+     ]
+    },
+    {
+     "word": "star",
+     "icon": "⭐",
+     "answer": {
+      "word": "car",
+      "icon": "🚗"
+     },
+     "wrong": [
+      {
+       "word": "ball",
+       "icon": "⚽"
+      },
+      {
+       "word": "cake",
+       "icon": "🍰"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "phonics-allit-1",
+  "title": "Same Start",
+  "icon": "🅜",
+  "sceneType": "phonics",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "phonological",
+   "goal": "alliteration"
+  },
+  "difficulty": 3,
+  "params": {
+   "rung": "alliteration",
+   "items": [
+    {
+     "sound": "mmm",
+     "letter": "M",
+     "answer": {
+      "word": "moon",
+      "icon": "🌙"
+     },
+     "wrong": [
+      {
+       "word": "sun",
+       "icon": "☀️"
+      },
+      {
+       "word": "ball",
+       "icon": "⚽"
+      }
+     ]
+    },
+    {
+     "sound": "sss",
+     "letter": "S",
+     "answer": {
+      "word": "snake",
+      "icon": "🐍"
+     },
+     "wrong": [
+      {
+       "word": "cat",
+       "icon": "🐱"
+      },
+      {
+       "word": "tree",
+       "icon": "🌳"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "phonics-onset-1",
+  "title": "Word Parts",
+  "icon": "🔗",
+  "sceneType": "phonics",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "phonological",
+   "goal": "onset-rime"
+  },
+  "difficulty": 4,
+  "params": {
+   "rung": "onset-rime",
+   "items": [
+    {
+     "onset": "c",
+     "rime": "at",
+     "word": "cat",
+     "icon": "🐱",
+     "wrong": [
+      "🐶",
+      "☀️"
+     ]
+    },
+    {
+     "onset": "d",
+     "rime": "og",
+     "word": "dog",
+     "icon": "🐶",
+     "wrong": [
+      "🎩",
+      "🌙"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "phonics-phoneme-1",
+  "title": "Blend It",
+  "icon": "🎶",
+  "sceneType": "phonics",
+  "elofTags": {
+   "domain": "literacy",
+   "subDomain": "phonological",
+   "goal": "phoneme-blend"
+  },
+  "difficulty": 5,
+  "params": {
+   "rung": "phoneme",
+   "items": [
+    {
+     "phonemes": [
+      "s",
+      "u",
+      "n"
+     ],
+     "word": "sun",
+     "icon": "☀️",
+     "wrong": [
+      "🌙",
+      "🐟"
+     ]
+    },
+    {
+     "phonemes": [
+      "c",
+      "a",
+      "t"
+     ],
+     "word": "cat",
+     "icon": "🐱",
+     "wrong": [
+      "🐸",
+      "🚗"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "shape-2d-1",
+  "title": "Shapes",
+  "icon": "🔵",
+  "sceneType": "shape",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "geometry",
+   "goal": "name-2d"
+  },
+  "difficulty": 1,
+  "params": {
+   "rounds": [
+    {
+     "name": "circle",
+     "kind": "circle"
+    },
+    {
+     "name": "square",
+     "kind": "square"
+    },
+    {
+     "name": "triangle",
+     "kind": "triangle"
+    }
+   ]
+  }
+ },
+ {
+  "id": "shape-2d-2",
+  "title": "Shapes",
+  "icon": "⭐",
+  "sceneType": "shape",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "geometry",
+   "goal": "name-2d"
+  },
+  "difficulty": 2,
+  "params": {
+   "rounds": [
+    {
+     "name": "rectangle",
+     "kind": "rectangle"
+    },
+    {
+     "name": "star",
+     "kind": "star"
+    },
+    {
+     "name": "heart",
+     "kind": "heart"
+    },
+    {
+     "name": "oval",
+     "kind": "oval"
+    }
+   ]
+  }
+ },
+ {
+  "id": "shape-3d-1",
+  "title": "Solids",
+  "icon": "⚽",
+  "sceneType": "shape",
+  "elofTags": {
+   "domain": "mathematics",
+   "subDomain": "geometry",
+   "goal": "name-3d"
+  },
+  "difficulty": 3,
+  "params": {
+   "rounds": [
+    {
+     "name": "sphere",
+     "kind": "sphere"
+    },
+    {
+     "name": "cube",
+     "kind": "cube"
+    }
+   ]
+  }
+ },
+ {
+  "id": "freedraw",
+  "title": "Draw",
+  "icon": "🖍️",
+  "sceneType": "freedraw",
+  "elofTags": {
+   "domain": "perceptual-motor",
+   "subDomain": "fine-motor",
+   "goal": "free-drawing"
+  },
+  "difficulty": 1,
+  "params": {
+   "palette": [
+    "#E4572E",
+    "#F3A712",
+    "#5BC0EB",
+    "#9BC53D",
+    "#9B5DE5",
+    "#3D348B",
+    "#212121"
+   ],
+   "stamps": [
+    "⭐",
+    "🌸",
+    "🦋",
+    "🌈",
+    "💛"
+   ]
+  }
+ }
+]
