@@ -47,6 +47,19 @@ const add = (t) => { if (t && typeof t === 'string') lines.add(t.trim().replace(
   'Almost! Start at the green dot.',
   'You wrote Maelie!',
   "That's right!",
+  // fish / peekaboo / memory games
+  'You caught them all!',
+  'You found them all! Peekaboo!',
+  'You found all the pairs!',
+  // trace solo phase
+  "Good trying! Let's practice together one more time.",
+  'Try again! Start at the green dot.',
+  // celebration praise pool
+  'You did it!',
+  'Amazing!',
+  'Great job!',
+  'Hooray! Wonderful!',
+  'Way to go!',
 ].forEach(add);
 
 // per-letter lines
@@ -55,10 +68,16 @@ for (const L of Object.keys(LETTER_SOUNDS)) {
   add(`Big ${L}`);
   add(`small ${L}`);
   add(`Find the letter ${L}!`);
+  add(`Find the fish with the letter ${L}!`);
+  add(`Find the friend holding the letter ${L}!`);
 }
 // numbers
 NUM_WORDS.forEach(add);
-for (let n = 0; n <= 10; n++) add(`Find the number ${n}!`);
+for (let n = 0; n <= 10; n++) {
+  add(`Find the number ${n}!`);
+  add(`Find the fish with the number ${n}!`);
+  add(`Find the friend holding the number ${n}!`);
+}
 add(`${NUM_WORDS[3]}! That's right!`); // tap-count praise pattern below covers all
 for (let n = 1; n <= 10; n++) add(`${NUM_WORDS[n]}! That's right!`);
 
@@ -67,7 +86,9 @@ for (const g of Object.values(glyphs)) {
   add(g.label);
   add(`Trace ${g.label}! ${g.strokes[0].hint}`);
   add(`Now trace ${g.label}! ${g.strokes[0].hint}`);
-  for (const s of g.strokes) { add(s.hint); add(`Watch the little red dot. ${s.hint}`); }
+  add(`Your turn! Draw ${g.label} all by yourself!`);
+  add(`${g.label}! You wrote it all by yourself!`);
+  for (const s of g.strokes) { add(s.hint); add(`Watch the little red dot. ${s.hint}`); add(`Almost! ${s.hint}`); }
 }
 
 // shapes
@@ -86,6 +107,7 @@ function scan(v) {
       if ((k === 'say' || k === 'instruction' || k === 'hint') && typeof val === 'string') add(val);
       if (k === 'scaffold' && Array.isArray(val)) val.forEach(add);
       if (k === 'word' && typeof val === 'string') praiseWord(val);
+      if (k === 'celebrateWord' && typeof val === 'string') add(`You wrote ${val}!`);
       scan(val);
     }
   }

@@ -16,6 +16,8 @@ export default function FeedScene({ activity, onComplete, onMiss }: SceneProps) 
   const [ri, setRi] = useState(0);
   const [choices, setChoices] = useState<{ icon: string; right: boolean }[]>([]);
   const [munch, setMunch] = useState(false);
+  const [hearts, setHearts] = useState<number[]>([]);
+  const heartId = useRef(0);
   const animalRef = useRef<HTMLDivElement>(null);
   const round = params.rounds[ri];
 
@@ -37,6 +39,10 @@ export default function FeedScene({ activity, onComplete, onMiss }: SceneProps) 
       setMunch(true);
       burstAtElement(a, 16);
       setTimeout(() => setMunch(false), 500);
+      // little hearts float up from the happy animal
+      const ids = [heartId.current++, heartId.current++, heartId.current++];
+      setHearts((h) => [...h, ...ids]);
+      setTimeout(() => setHearts((h) => h.filter((id) => !ids.includes(id))), 1400);
       speak('Yum yum yum! Thank you!');
       if (ri + 1 < params.rounds.length) setTimeout(() => setRi(ri + 1), 1400);
       else {
@@ -54,6 +60,11 @@ export default function FeedScene({ activity, onComplete, onMiss }: SceneProps) 
 
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
+      <style>{`@keyframes floatHeart {
+        0% { transform: translate(-50%, 0) scale(0.4); opacity: 0; }
+        20% { opacity: 1; }
+        100% { transform: translate(-50%, calc(-190 * var(--lu))) scale(1.25); opacity: 0; }
+      }`}</style>
       <div style={{ position: 'absolute', top: 'calc(24 * var(--lu))', left: 0, right: 0, display: 'flex', justifyContent: 'center' }}>
         <Dots total={params.rounds.length} done={ri} />
       </div>
@@ -68,23 +79,40 @@ export default function FeedScene({ activity, onComplete, onMiss }: SceneProps) 
       {/* the hungry animal */}
       <div ref={animalRef} style={{
         position: 'absolute', bottom: 'calc(40 * var(--lu))', left: '50%',
-        transform: `translateX(-50%) scale(${munch ? 1.15 : 1})`,
+        transform: `translateX(-50%) scale(${munch ? 1.15 : 1}) rotate(${munch ? '-3deg' : '0deg'})`,
         transition: 'transform 0.25s cubic-bezier(0.34, 1.8, 0.64, 1)',
         textAlign: 'center',
       }}>
         <img src={art(params.animal)} alt={params.name} draggable={false} style={{
           width: 'calc(300 * var(--lu))', height: 'calc(300 * var(--lu))',
           objectFit: 'contain', pointerEvents: 'none',
+          animation: 'bob 3.6s ease-in-out infinite',
           filter: 'drop-shadow(0 calc(8 * var(--lu)) calc(6 * var(--lu)) rgba(0,0,0,0.15))',
         }} />
         <div style={{ fontSize: 'calc(34 * var(--lu))', fontWeight: 700, color: '#3D348B' }}>{params.name}</div>
+        {hearts.map((id, i) => (
+          <span key={id} style={{
+            position: 'absolute', top: 'calc(30 * var(--lu))', left: `${34 + (i % 3) * 16}%`,
+            fontSize: 'calc(44 * var(--lu))', pointerEvents: 'none',
+            animation: `floatHeart 1.3s ease-out ${(i % 3) * 0.14}s both`,
+          }}>💗</span>
+        ))}
       </div>
-      {/* draggable choices */}
+      {/* draggable choices on their snack tray */}
       <div style={{
         position: 'absolute', top: 'calc(200 * var(--lu))', left: 0, right: 0,
-        display: 'flex', justifyContent: 'center', gap: 'calc(50 * var(--lu))',
+        display: 'flex', justifyContent: 'center',
       }}>
-        {choices.map((c, i) => <DragItem key={`${ri}-${i}`} icon={c.icon} onDrop={(x, y) => dropOn(x, y, c.right)} />)}
+        <div style={{
+          display: 'flex', gap: 'calc(50 * var(--lu))',
+          background: 'rgba(255,255,255,0.55)',
+          border: 'calc(5 * var(--lu)) solid rgba(255,255,255,0.9)',
+          borderRadius: 'calc(36 * var(--lu))',
+          padding: 'calc(18 * var(--lu)) calc(30 * var(--lu))',
+          boxShadow: '0 calc(6 * var(--lu)) 0 rgba(120,90,40,0.15)',
+        }}>
+          {choices.map((c, i) => <DragItem key={`${ri}-${i}`} icon={c.icon} onDrop={(x, y) => dropOn(x, y, c.right)} />)}
+        </div>
       </div>
     </div>
   );

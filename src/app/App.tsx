@@ -22,7 +22,12 @@ type Route =
   | { name: 'parent' }
   | { name: 'm0' };
 
-const STICKER_POOL = ['🦄', '🐬', '🌈', '🚀', '🦖', '🧸', '🎠', '🐙', '🦩', '🍦', '🎨', '🐨', '⭐', '🎪', '🦜'];
+const STICKER_POOL = [
+  '🦄', '🐬', '🌈', '🚀', '🦖', '🧸', '🎠', '🐙', '🦩', '🍦',
+  '🎨', '🐨', '⭐', '🎪', '🦜', '🧜‍♀️', '🐝', '🌺', '🛸', '🦊',
+  '🍭', '🐢', '🎂', '🪁', '🦉', '🌟', '🐞', '🍉', '🎀', '🐳',
+  '🧁', '🦋', '🌻', '🚂', '🐣', '🍩', '👑', '🐸', '🎡', '💎',
+];
 const COINS_PER_STICKER = 3;
 
 export default function App() {
@@ -203,14 +208,21 @@ function PathScreen(props: {
     el?.scrollIntoView({ block: 'center' });
   }, []);
   const STEP_H = 150; // logical units per stone row
+  const doneCount = props.activities.filter((a) => props.doneIds.has(a.id)).length;
+  // the trail wanders through pastel "lands" — a fresh tint every 22 stones
+  const ZONE_TINTS = ['#DBD5C4', '#CBE3F0', '#F0D5E3', '#D5F0DB', '#F0E7C4', '#E0D5F0', '#F0DAC4', '#C4E7F0'];
+  const ZONE_EDGE = ['#FFFFFF', '#D7ECF8', '#F8DCEC', '#DCF8E4', '#F8EED2', '#EBDCF8', '#F8E4D2', '#D2EEF8'];
 
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
       <Background scene="castle" />
       <BackButton onPress={props.onBack} />
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'calc(18 * var(--lu))' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 'calc(18 * var(--lu))', marginTop: 'calc(18 * var(--lu))' }}>
         <span style={{ fontSize: 'calc(42 * var(--lu))', fontWeight: 700, color: '#3D348B', background: 'rgba(255,255,255,0.85)', border: 'calc(5 * var(--lu)) solid #FFF', borderRadius: 'calc(26 * var(--lu))', padding: 'calc(6 * var(--lu)) calc(34 * var(--lu))', boxShadow: '0 calc(5 * var(--lu)) 0 rgba(120,90,40,0.2)' }}>
           🗺️ My Path
+        </span>
+        <span style={{ fontSize: 'calc(28 * var(--lu))', fontWeight: 700, color: '#7A5B18', background: '#FFD166', border: 'calc(4 * var(--lu)) solid #FFF', borderRadius: 'calc(20 * var(--lu))', padding: 'calc(6 * var(--lu)) calc(20 * var(--lu))', boxShadow: '0 calc(4 * var(--lu)) 0 rgba(120,90,40,0.25)' }}>
+          ⭐ {doneCount} / {props.activities.length}
         </span>
       </div>
       <div ref={scrollRef} style={{
@@ -232,6 +244,8 @@ function PathScreen(props: {
             const current = i === props.currentIdx;
             const locked = i > props.currentIdx;
             const xPct = 50 + Math.sin(i * 0.9) * 26; // winding trail
+            const zone = Math.floor(i / 22) % ZONE_TINTS.length;
+            const milestone = (i + 1) % 10 === 0; // every 10th stone is a treat
             return (
               <div key={a.id} data-current={current}
                 onClick={() => { if (!locked) { playSfx('tap'); props.onPick(a); } else { playSfx('oops'); speak('Finish the glowing one first!'); } }}
@@ -245,8 +259,12 @@ function PathScreen(props: {
                     ? 'radial-gradient(circle at 38% 30%, #E8FFF2, #B9EFD0)'
                     : current
                       ? 'radial-gradient(circle at 38% 30%, #FFFFFF, #FFF3D6)'
-                      : 'radial-gradient(circle at 38% 30%, #F2EEE4, #DBD5C4)',
-                  border: current ? 'calc(6 * var(--lu)) solid #FFB020' : 'calc(6 * var(--lu)) solid #FFFFFF',
+                      : `radial-gradient(circle at 38% 30%, #F2EEE4, ${ZONE_TINTS[zone]})`,
+                  border: current
+                    ? 'calc(6 * var(--lu)) solid #FFB020'
+                    : milestone && !done
+                      ? 'calc(6 * var(--lu)) solid #FFD166'
+                      : `calc(6 * var(--lu)) solid ${done ? '#FFFFFF' : ZONE_EDGE[zone]}`,
                   boxShadow: current
                     ? '0 0 calc(28 * var(--lu)) rgba(255,176,32,0.75), 0 calc(7 * var(--lu)) 0 rgba(120,90,40,0.25), inset 0 calc(-6 * var(--lu)) 0 rgba(0,0,0,0.06)'
                     : '0 calc(5 * var(--lu)) 0 rgba(120,90,40,0.18), inset 0 calc(-6 * var(--lu)) 0 rgba(0,0,0,0.06)',
@@ -258,9 +276,17 @@ function PathScreen(props: {
                   touchAction: 'pan-y',
                   transition: 'transform 0.15s',
                 }}>
-                <span>{locked ? '🔒' : a.icon}</span>
+                <span>{locked ? (milestone ? '🎁' : '🔒') : a.icon}</span>
                 <span style={{ fontSize: 'calc(18 * var(--lu))', fontWeight: 700, color: '#555' }}>{a.title}</span>
+                {/* level number pebble */}
+                <span style={{
+                  position: 'absolute', bottom: 'calc(-10 * var(--lu))', left: '50%', transform: 'translateX(-50%)',
+                  fontSize: 'calc(16 * var(--lu))', fontWeight: 700, color: '#8A7A55',
+                  background: 'rgba(255,255,255,0.92)', borderRadius: 'calc(12 * var(--lu))',
+                  padding: '0 calc(10 * var(--lu))', boxShadow: '0 calc(2 * var(--lu)) 0 rgba(120,90,40,0.2)',
+                }}>{i + 1}</span>
                 {done && <span style={{ position: 'absolute', top: 'calc(-14 * var(--lu))', right: 'calc(-6 * var(--lu))', fontSize: 'calc(38 * var(--lu))' }}>⭐</span>}
+                {current && <span style={{ position: 'absolute', top: 'calc(-18 * var(--lu))', left: 'calc(-10 * var(--lu))', fontSize: 'calc(32 * var(--lu))', animation: 'bob 1.4s ease-in-out infinite' }}>✨</span>}
               </div>
             );
           })}
@@ -407,12 +433,12 @@ function StickerBook(props: { profile: Profile; onBack: () => void }) {
         📒 Stickers
       </div>
       <div style={{
-        display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 'calc(20 * var(--lu))',
-        padding: 'calc(60 * var(--lu))', alignContent: 'center',
+        display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: 'calc(14 * var(--lu))',
+        padding: 'calc(30 * var(--lu)) calc(70 * var(--lu))', alignContent: 'center',
       }}>
         {STICKER_POOL.map((s, i) => (
           <div key={s} style={{
-            fontSize: 'calc(80 * var(--lu))', textAlign: 'center',
+            fontSize: 'calc(58 * var(--lu))', textAlign: 'center',
             filter: i < props.profile.stickers.length ? 'none' : 'grayscale(1) opacity(0.25)',
             transform: i < props.profile.stickers.length ? 'scale(1)' : 'scale(0.85)',
             transition: 'all 0.3s',

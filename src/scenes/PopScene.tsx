@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import type { SceneProps } from './shared';
-import { shuffle } from './shared';
+import { shuffle, NUM_WORDS } from './shared';
 import { playSfx, speak } from '../core/audio';
 import { burstAtElement } from '../ui/juice';
 import { Dots } from '../ui/common';
@@ -57,6 +57,7 @@ export default function PopScene({ activity, onComplete, onMiss }: SceneProps) {
       burstAtElement(el, 16);
       const n = popped + 1;
       setPopped(n);
+      speak(NUM_WORDS[n]);
       if (n >= params.need) {
         doneRef.current = true;
         playSfx('great');
@@ -72,7 +73,10 @@ export default function PopScene({ activity, onComplete, onMiss }: SceneProps) {
 
   return (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-      <style>{`@keyframes floatUp { from { transform: translateY(0); } to { transform: translateY(calc(-115 * var(--lu) * 8)); } }`}</style>
+      <style>{`
+        @keyframes floatUp { from { transform: translateY(0); } to { transform: translateY(calc(-115 * var(--lu) * 8)); } }
+        @keyframes balloonSway { 0%, 100% { transform: translateX(calc(-9 * var(--lu))) rotate(-3deg); } 50% { transform: translateX(calc(9 * var(--lu))) rotate(3deg); } }
+      `}</style>
       {/* target reminder card */}
       <div style={{
         position: 'absolute', top: 'calc(20 * var(--lu))', left: '50%', transform: 'translateX(-50%)',
@@ -85,31 +89,51 @@ export default function PopScene({ activity, onComplete, onMiss }: SceneProps) {
       </div>
       {balloons.map((b) => (
         <div key={b.id}
-          onPointerDown={(e) => tapBalloon(b, e.currentTarget)}
           style={{
             position: 'absolute', left: `${b.x}%`, bottom: 'calc(-160 * var(--lu))',
             animation: `floatUp ${b.dur}s linear ${b.delay}s infinite`,
-            opacity: b.popped ? 0 : 1,
-            transition: 'opacity 0.2s',
-            cursor: 'pointer', touchAction: 'none',
-            zIndex: 2,
+            zIndex: 2, pointerEvents: 'none',
           }}>
-          <svg width="0" height="0" style={{ position: 'absolute' }} />
-          <div style={{
-            width: 'calc(110 * var(--lu))', height: 'calc(132 * var(--lu))',
-            background: `radial-gradient(circle at 35% 30%, ${b.color}EE, ${b.color})`,
-            borderRadius: '50% 50% 48% 48%',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 'calc(52 * var(--lu))', fontWeight: 700, color: '#FFFFFF',
-            textShadow: '0 2px 4px rgba(0,0,0,0.25)',
-            boxShadow: 'inset 0 calc(-8 * var(--lu)) calc(12 * var(--lu)) rgba(0,0,0,0.12)',
-          }}>
-            {b.label}
+          <div
+            onPointerDown={(e) => tapBalloon(b, e.currentTarget)}
+            style={{
+              animation: `balloonSway ${2.4 + (b.id % 4) * 0.5}s ease-in-out infinite`,
+              opacity: b.popped ? 0 : 1,
+              transform: b.popped ? 'scale(1.7)' : 'scale(1)',
+              transition: 'opacity 0.22s, transform 0.22s',
+              cursor: 'pointer', touchAction: 'none', pointerEvents: 'auto',
+            }}>
+            <div style={{
+              position: 'relative',
+              width: 'calc(110 * var(--lu))', height: 'calc(132 * var(--lu))',
+              background: `radial-gradient(circle at 35% 30%, ${b.color}EE, ${b.color})`,
+              borderRadius: '50% 50% 48% 48%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 'calc(52 * var(--lu))', fontWeight: 700, color: '#FFFFFF',
+              textShadow: '0 2px 4px rgba(0,0,0,0.25)',
+              boxShadow: 'inset 0 calc(-8 * var(--lu)) calc(12 * var(--lu)) rgba(0,0,0,0.12)',
+            }}>
+              {/* shine */}
+              <div style={{
+                position: 'absolute', top: '14%', left: '20%',
+                width: 'calc(26 * var(--lu))', height: 'calc(38 * var(--lu))',
+                borderRadius: '50%', background: 'rgba(255,255,255,0.55)',
+                transform: 'rotate(-24deg)', pointerEvents: 'none',
+              }} />
+              {b.label}
+            </div>
+            {/* knot */}
+            <div style={{
+              width: 0, height: 0, margin: '0 auto',
+              borderLeft: 'calc(9 * var(--lu)) solid transparent',
+              borderRight: 'calc(9 * var(--lu)) solid transparent',
+              borderBottom: `calc(12 * var(--lu)) solid ${b.color}`,
+            }} />
+            {/* curly string */}
+            <svg viewBox="0 0 20 60" style={{ display: 'block', margin: '0 auto', width: 'calc(20 * var(--lu))', height: 'calc(56 * var(--lu))' }}>
+              <path d="M10 0 C 2 14, 18 24, 10 38 C 4 48, 14 54, 10 60" fill="none" stroke="rgba(0,0,0,0.3)" strokeWidth="2" strokeLinecap="round" />
+            </svg>
           </div>
-          <div style={{
-            width: '2px', height: 'calc(50 * var(--lu))', background: 'rgba(0,0,0,0.25)',
-            margin: '0 auto',
-          }} />
         </div>
       ))}
     </div>

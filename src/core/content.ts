@@ -6,7 +6,7 @@ import type { Glyph } from './traceScore';
 
 export const SCENE_TYPES = [
   'trace', 'match', 'sort', 'count', 'pattern', 'phonics', 'shape', 'freedraw',
-  'pop', 'feed',
+  'pop', 'feed', 'fish', 'memory', 'hide',
 ] as const;
 export type SceneType = (typeof SCENE_TYPES)[number];
 
@@ -54,7 +54,8 @@ export async function loadContent(): Promise<ContentBundle> {
   return bundle;
 }
 
-const isGame = (a: Activity): boolean => a.sceneType === 'pop' || a.sceneType === 'feed';
+const GAME_SCENES: SceneType[] = ['pop', 'feed', 'fish', 'memory', 'hide'];
+const isGame = (a: Activity): boolean => GAME_SCENES.includes(a.sceneType);
 
 /** Groups for the home map — literal, single-word labels (§9). */
 export const AREAS: { id: string; label: string; icon: string; color: string; scene: string; match: (a: Activity) => boolean }[] = [

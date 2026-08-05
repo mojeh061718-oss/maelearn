@@ -1,6 +1,9 @@
 // BLUEPRINT §7/§8 — trace scene. Ghost glyph + animated guide dot on one
 // canvas; ink on its own desynchronized canvas; PointerInput owns the surface.
-// Never hard-fails: two misses on a stroke → assisted accept (§8).
+// Two phases per glyph: guided trace first, then "your turn" — she draws the
+// letter herself over a barely-there hint. The activity only completes when
+// the solo drawing passes; solo never auto-accepts, it loops back to guided
+// practice instead (§8: never hard-fail, but never pass for her either).
 
 import { useEffect, useRef, useState } from 'react';
 import type { SceneProps } from './shared';
@@ -15,13 +18,16 @@ import { charColor } from '../ui/common';
 
 interface TraceParams { glyphIds: string[]; speakEach?: boolean; celebrateWord?: string; }
 
+type Phase = 'trace' | 'solo';
+
 export default function TraceScene({ activity, difficulty, onComplete, onMiss }: SceneProps) {
   const params = activity.params as TraceParams;
   const hostRef = useRef<HTMLDivElement>(null);
   const [glyphs, setGlyphs] = useState<Glyph[] | null>(null);
   const [gi, setGi] = useState(0);            // glyph index
+  const [phase, setPhase] = useState<Phase>('trace');
   const [, setSi] = useState(0);              // re-render trigger on stroke advance
-  const stateRef = useRef({ gi: 0, si: 0, misses: 0, assisted: false });
+  const stateRef = useRef({ gi: 0, si: 0, phase: 'trace' as Phase, misses: 0, assisted: false });
 
   useEffect(() => {
     void loadContent().then((c) => setGlyphs(params.glyphIds.map((id) => c.glyphs[id])));
@@ -81,6 +87,38 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
       gctx.setLineDash([14, 14]);
       gctx.beginPath(); gctx.moveTo(GX0, MID); gctx.lineTo(GX1, MID); gctx.stroke();
       gctx.setLineDash([]);
+
+      if (st.phase === 'solo') {
+        // "your turn" — barely-there hint only: whisper-faint strokes, a
+        // dashed cue for the current stroke, and the green start dot.
+        g.strokes.forEach((s, i) => {
+          gctx.beginPath();
+          s.points.forEach(([x, y], j) => (j ? gctx.lineTo(x, y) : gctx.moveTo(x, y)));
+          gctx.lineWidth = 40;
+          gctx.lineCap = 'round';
+          gctx.lineJoin = 'round';
+          gctx.strokeStyle = i < st.si ? 'rgba(6,214,160,0.22)' : 'rgba(61,52,139,0.05)';
+          gctx.stroke();
+        });
+        const s = g.strokes[st.si];
+        if (s) {
+          gctx.beginPath();
+          s.points.forEach(([x, y], j) => (j ? gctx.lineTo(x, y) : gctx.moveTo(x, y)));
+          gctx.lineWidth = 6;
+          gctx.setLineDash([4, 26]);
+          gctx.lineCap = 'round';
+          gctx.strokeStyle = 'rgba(91,79,233,0.35)';
+          gctx.stroke();
+          gctx.setLineDash([]);
+          const [sx, sy] = s.points[0];
+          gctx.beginPath(); gctx.arc(sx, sy, 18, 0, Math.PI * 2);
+          gctx.fillStyle = '#06D6A0'; gctx.fill();
+          gctx.beginPath(); gctx.arc(sx, sy, 18, 0, Math.PI * 2);
+          gctx.lineWidth = 5; gctx.strokeStyle = '#FFF'; gctx.stroke();
+        }
+        return;
+      }
+
       g.strokes.forEach((s, i) => {
         gctx.beginPath();
         s.points.forEach(([x, y], j) => (j ? gctx.lineTo(x, y) : gctx.moveTo(x, y)));
@@ -123,10 +161,47 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
 
     const loop = () => {
       raf = requestAnimationFrame(loop);
-      guideT = (guideT + 0.006) % 1;
+      if (stateRef.current.phase === 'trace') guideT = (guideT + 0.006) % 1;
       drawGhost();
     };
     loop();
+
+    function enterSolo(g: Glyph): void {
+      const st = stateRef.current;
+      st.phase = 'solo'; st.si = 0; st.misses = 0;
+      ink.clear();
+      setPhase('solo'); setSi(0);
+      playSfx('good');
+      speak(`Your turn! Draw ${g.label} all by yourself!`);
+    }
+
+    function backToTrace(): void {
+      const st = stateRef.current;
+      st.phase = 'trace'; st.si = 0; st.misses = 0;
+      st.assisted = true;
+      ink.clear();
+      setPhase('trace'); setSi(0);
+      speak(`Good trying! Let's practice together one more time.`);
+    }
+
+    function finishGlyph(g: Glyph): void {
+      const st = stateRef.current;
+      const [cx, cy] = g.strokes[0].points[Math.floor(g.strokes[0].points.length / 2)];
+      burst(cx, cy, 24);
+      playSfx('great');
+      if (params.speakEach) speak(`${g.label}! You wrote it all by yourself!`);
+      ink.clear();
+      if (st.gi + 1 < glyphs!.length) {
+        st.gi += 1; st.si = 0; st.phase = 'trace'; st.misses = 0;
+        setGi(st.gi); setSi(0); setPhase('trace');
+        const next = glyphs![st.gi];
+        ink.setColor(charColor(next.label));
+        setTimeout(() => speak(`Now trace ${next.label}! ${next.strokes[0].hint}`), 900);
+      } else {
+        if (params.celebrateWord) setTimeout(() => speak(`You wrote ${params.celebrateWord}!`), 700);
+        setTimeout(() => onComplete({ assisted: st.assisted }), 900);
+      }
+    }
 
     function advance(): void {
       const st = stateRef.current;
@@ -136,23 +211,12 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
         st.si += 1;
         setSi(st.si);
         playSfx('good');
+      } else if (st.phase === 'trace') {
+        // guided pass finished → she draws it herself before it counts
+        burst(g.strokes[0].points[0][0], g.strokes[0].points[0][1], 12);
+        enterSolo(g);
       } else {
-        // glyph finished
-        const [cx, cy] = g.strokes[0].points[Math.floor(g.strokes[0].points.length / 2)];
-        burst(cx, cy, 24);
-        playSfx('great');
-        if (params.speakEach) speak(g.label);
-        ink.clear();
-        if (st.gi + 1 < glyphs!.length) {
-          st.gi += 1; st.si = 0;
-          setGi(st.gi); setSi(0);
-          const next = glyphs![st.gi];
-          ink.setColor(charColor(next.label));
-          setTimeout(() => speak(`Now trace ${next.label}! ${next.strokes[0].hint}`), 700);
-        } else {
-          if (params.celebrateWord) setTimeout(() => speak(`You wrote ${params.celebrateWord}!`), 600);
-          setTimeout(() => onComplete({ assisted: st.assisted }), 900);
-        }
+        finishGlyph(g);
       }
     }
 
@@ -164,8 +228,11 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
         const { stroke } = cur();
         if (!stroke) return;
         const st = stateRef.current;
-        const tol = toleranceForDifficulty(difficulty);
-        const res = scoreStroke(all, stroke, tol);
+        const solo = st.phase === 'solo';
+        // solo has no guide to follow, so the corridor is wider — but it is
+        // still her own drawing that has to pass.
+        const tol = toleranceForDifficulty(difficulty) * (solo ? 1.25 : 1);
+        const res = scoreStroke(all, stroke, tol, solo ? 0.7 : 0.8);
         if (res.accidental) { ink.undo(); return; } // graze/tap — not an attempt
         if (res.pass) {
           advance();
@@ -173,10 +240,18 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
           st.misses += 1;
           onMiss();
           ink.undo();
-          // She keeps trying — no quick auto-accept. Help escalates with each
-          // miss; only after 4 real attempts do we accept assisted (§8: never
-          // hard-fail, but never breeze past her either).
-          if (st.misses >= 4) {
+          if (solo) {
+            // No assisted accept here — completing requires her own drawing.
+            // After 3 real tries, loop back to guided practice instead.
+            if (st.misses >= 3) {
+              backToTrace();
+            } else {
+              playSfx('oops');
+              speak(st.misses === 1 ? `Almost! ${stroke.hint}` : 'Try again! Start at the green dot.');
+            }
+          } else if (st.misses >= 4) {
+            // guided phase never hard-fails (§8) — assist and move on; the
+            // solo phase still stands between her and the finish line.
             st.assisted = true;
             speak('Good trying! Watch the dot, and off we go!');
             playSfx('good');
@@ -222,24 +297,44 @@ export default function TraceScene({ activity, difficulty, onComplete, onMiss }:
       <div ref={hostRef} style={{ position: 'absolute', inset: 0 }} />
       <div style={{
         position: 'absolute', top: 'calc(20 * var(--lu))', left: 0, right: 0, pointerEvents: 'none',
-        display: 'flex', justifyContent: 'center', gap: 'calc(10 * var(--lu))',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'calc(10 * var(--lu))',
       }}>
-        {(glyphs ?? []).map((g, i) => (
-          <div key={i} style={{
-            minWidth: 'calc(56 * var(--lu))', height: 'calc(56 * var(--lu))',
-            borderRadius: 'calc(16 * var(--lu))',
-            background: i < gi ? '#B9EFD0' : i === gi ? '#FFFFFF' : 'rgba(255,255,255,0.55)',
-            border: i === gi ? 'calc(4 * var(--lu)) solid #FFB020' : 'calc(4 * var(--lu)) solid rgba(255,255,255,0.8)',
-            boxShadow: '0 calc(3 * var(--lu)) 0 rgba(120,90,40,0.15)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 'calc(32 * var(--lu))', fontWeight: 700,
-            color: i <= gi ? charColor(g.label) : '#AAA',
-          }}>
-            {i < gi ? '⭐' : g.label}
-          </div>
-        ))}
-        {total === 1 && null}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 'calc(10 * var(--lu))' }}>
+          {(glyphs ?? []).map((g, i) => (
+            <div key={i} style={{
+              minWidth: 'calc(56 * var(--lu))', height: 'calc(56 * var(--lu))',
+              borderRadius: 'calc(16 * var(--lu))',
+              background: i < gi ? '#B9EFD0' : i === gi ? '#FFFFFF' : 'rgba(255,255,255,0.55)',
+              border: i === gi ? 'calc(4 * var(--lu)) solid #FFB020' : 'calc(4 * var(--lu)) solid rgba(255,255,255,0.8)',
+              boxShadow: '0 calc(3 * var(--lu)) 0 rgba(120,90,40,0.15)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 'calc(32 * var(--lu))', fontWeight: 700,
+              color: i <= gi ? charColor(g.label) : '#AAA',
+            }}>
+              {i < gi ? '⭐' : g.label}
+            </div>
+          ))}
+        </div>
       </div>
+      {/* phase banner: watch-and-trace vs. your turn — below the paper */}
+      <div style={{
+        position: 'absolute', bottom: 'calc(22 * var(--lu))', left: 0, right: 0, pointerEvents: 'none',
+        display: 'flex', justifyContent: 'center',
+      }}>
+        <div key={`${gi}-${phase}`} style={{
+          fontSize: 'calc(30 * var(--lu))', fontWeight: 700,
+          color: phase === 'trace' ? '#3D348B' : '#B0662A',
+          background: phase === 'trace' ? 'rgba(255,255,255,0.92)' : '#FFE9C9',
+          border: `calc(4 * var(--lu)) solid ${phase === 'trace' ? '#FFFFFF' : '#FFB020'}`,
+          borderRadius: 'calc(22 * var(--lu))',
+          padding: 'calc(6 * var(--lu)) calc(28 * var(--lu))',
+          boxShadow: '0 calc(4 * var(--lu)) 0 rgba(120,90,40,0.15)',
+          animation: 'popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both',
+        }}>
+          {phase === 'trace' ? '👀 Watch and trace!' : '✏️ Your turn — you draw it!'}
+        </div>
+      </div>
+      {total === 1 && null}
     </div>
   );
 }

@@ -109,6 +109,7 @@ function toGlyph(id, def) {
 const glyphs = {};
 for (const [k, def] of Object.entries(G)) glyphs[`U${k}`] = toGlyph(`U${k}`, def);
 
+
 // ---------- activities ----------
 const acts = [];
 const lit = (sub, goal) => ({ domain: 'literacy', subDomain: sub, goal });
@@ -124,14 +125,15 @@ LETTER_ORDER.forEach((L, i) => {
     params: { glyphIds: [`U${L}`], speakEach: true },
   });
 });
-for (let n = 0; n <= 9; n++) {
+const NUMBER_ORDER = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+NUMBER_ORDER.forEach((n, i) => {
   acts.push({
     id: `trace-N${n}`, title: String(n), icon: String(n), sceneType: 'trace',
     elofTags: math('counting', 'write-numerals'),
-    difficulty: n < 5 ? 1 : 2,
+    difficulty: i < 5 ? 1 : 2,
     params: { glyphIds: [`U${n}`], speakEach: true },
   });
-}
+});
 // Her own name — explicit PK4 outcome (BLUEPRINT §11)
 acts.push({
   id: 'trace-name', title: 'My Name', icon: '💛', sceneType: 'trace',
@@ -139,23 +141,38 @@ acts.push({
   difficulty: 2,
   params: { glyphIds: ['UM', 'UA', 'UE', 'UL', 'UI', 'UE'], speakEach: true, celebrateWord: 'Maelie' },
 });
+// Little words built from the glyphs she already knows — late-path levels.
+const WORDS = ['MOM', 'DAD', 'CAT', 'DOG', 'SUN', 'BEE', 'PIG', 'COW', 'HAT', 'BUS',
+  'ZOO', 'FOX', 'OWL', 'JAM', 'KEY', 'VAN', 'WEB', 'YAK', 'RUG', 'NET'];
+WORDS.forEach((w, i) => acts.push({
+  id: `trace-word-${w}`, title: w, icon: '📝', sceneType: 'trace',
+  elofTags: lit('writing', 'write-words'),
+  difficulty: i < 8 ? 3 : 4,
+  params: { glyphIds: w.split('').map((c) => `U${c}`), speakEach: true, celebrateWord: w.toLowerCase() },
+}));
 
 // match: letter→sound, upper↔lower, numeral→quantity
-const soundGroups = [['M', 'A', 'S', 'T'], ['E', 'L', 'I', 'P'], ['C', 'N', 'B', 'D'], ['F', 'G', 'H', 'K']];
+const soundGroups = [
+  ['M', 'A', 'S', 'T'], ['E', 'L', 'I', 'P'], ['C', 'N', 'B', 'D'],
+  ['F', 'G', 'H', 'K'], ['J', 'R', 'U', 'V'], ['W', 'Y', 'Z', 'O'],
+];
 soundGroups.forEach((g, i) => acts.push({
   id: `match-sound-${i + 1}`, title: 'Sounds', icon: '🔊', sceneType: 'match',
   elofTags: lit('print-alphabet', 'letter-sound'),
-  difficulty: i + 1 <= 2 ? 2 : 3,
+  difficulty: i < 2 ? 2 : 3,
   params: { mode: 'letter-sound', letters: g },
 }));
-const caseGroups = [['A', 'B', 'D', 'E'], ['G', 'H', 'M', 'N'], ['Q', 'R', 'T', 'L']];
+const caseGroups = [
+  ['A', 'B', 'D', 'E'], ['G', 'H', 'M', 'N'], ['Q', 'R', 'T', 'L'],
+  ['C', 'F', 'I', 'J'], ['K', 'P', 'S', 'U'], ['V', 'W', 'Y', 'Z'],
+];
 caseGroups.forEach((g, i) => acts.push({
   id: `match-case-${i + 1}`, title: 'Big+Small', icon: '🅰️', sceneType: 'match',
   elofTags: lit('print-alphabet', 'upper-lower'),
   difficulty: 2 + (i > 0 ? 1 : 0),
   params: { mode: 'case', letters: g },
 }));
-[[1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7, 8], [7, 8, 9, 10]].forEach((g, i) => acts.push({
+[[1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7, 8], [7, 8, 9, 10], [2, 4, 6, 8]].forEach((g, i) => acts.push({
   id: `match-qty-${i + 1}`, title: 'How Many', icon: '🎯', sceneType: 'match',
   elofTags: math('counting', 'numeral-quantity'),
   difficulty: i < 2 ? 1 : 2,
@@ -174,14 +191,25 @@ acts.push(
     params: { criterion: 'shape', bins: [{ id: 'circle', label: 'Circle', icon: '⚪' }, { id: 'square', label: 'Square', icon: '⬜' }], items: [{ icon: '🍪', bin: 'circle' }, { icon: '🎁', bin: 'square' }, { icon: '⚽', bin: 'circle' }, { icon: '📦', bin: 'square' }, { icon: '🕐', bin: 'circle' }, { icon: '🧇', bin: 'square' }] } },
   { id: 'sort-sound-1', title: 'First Sound', icon: '👂', sceneType: 'sort', elofTags: lit('phonological', 'alliteration'), difficulty: 3,
     params: { criterion: 'initial-sound', bins: [{ id: 'm', label: 'M', icon: 'M' }, { id: 's', label: 'S', icon: 'S' }], items: [{ icon: '🌙', bin: 'm', say: 'moon' }, { icon: '☀️', bin: 's', say: 'sun' }, { icon: '🐵', bin: 'm', say: 'monkey' }, { icon: '🧦', bin: 's', say: 'sock' }, { icon: '🍄', bin: 'm', say: 'mushroom' }, { icon: '⭐', bin: 's', say: 'star' }] } },
+  { id: 'sort-home-1', title: 'Who Lives Where', icon: '🌊', sceneType: 'sort', elofTags: { domain: 'science', subDomain: 'living-things', goal: 'habitats' }, difficulty: 2,
+    params: { criterion: 'habitat', bins: [{ id: 'farm', label: 'Farm', icon: '🚜' }, { id: 'ocean', label: 'Ocean', icon: '🌊' }], items: [{ icon: '🐄', bin: 'farm' }, { icon: '🐟', bin: 'ocean' }, { icon: '🐷', bin: 'farm' }, { icon: '🐙', bin: 'ocean' }, { icon: '🐔', bin: 'farm' }, { icon: '🦀', bin: 'ocean' }] } },
+  { id: 'sort-food-1', title: 'Fruit+Veggies', icon: '🥕', sceneType: 'sort', elofTags: { domain: 'science', subDomain: 'living-things', goal: 'categories' }, difficulty: 2,
+    params: { criterion: 'food-kind', bins: [{ id: 'fruit', label: 'Fruit', icon: '🍎' }, { id: 'veggie', label: 'Veggies', icon: '🥦' }], items: [{ icon: '🍌', bin: 'fruit' }, { icon: '🥕', bin: 'veggie' }, { icon: '🍇', bin: 'fruit' }, { icon: '🥦', bin: 'veggie' }, { icon: '🍓', bin: 'fruit' }, { icon: '🌽', bin: 'veggie' }] } },
+  { id: 'sort-temp-1', title: 'Hot+Cold', icon: '🔥', sceneType: 'sort', elofTags: { domain: 'science', subDomain: 'physical', goal: 'attributes' }, difficulty: 2,
+    params: { criterion: 'temperature', bins: [{ id: 'hot', label: 'Hot', icon: '🔥' }, { id: 'cold', label: 'Cold', icon: '❄️' }], items: [{ icon: '☀️', bin: 'hot' }, { icon: '⛄', bin: 'cold' }, { icon: '🌋', bin: 'hot' }, { icon: '🍦', bin: 'cold' }, { icon: '🍲', bin: 'hot' }, { icon: '🧊', bin: 'cold' }] } },
 );
 
 // count
-[3, 5, 7, 10].forEach((n, i) => acts.push({
+const tapDefs = [
+  [3, '🐠', 'fish_blue.png', 'underwater'], [4, '🦆', null, null], [5, '🍎', null, null],
+  [6, '🐡', 'fish_green.png', 'underwater'], [7, '🦋', null, null], [8, '🌸', null, null],
+  [9, '🍪', null, null], [10, '🐟', 'fish_orange.png', 'underwater'],
+];
+tapDefs.forEach(([n, icon, img, theme], i) => acts.push({
   id: `count-tap-${n}`, title: `Count ${n}`, icon: '👆', sceneType: 'count',
   elofTags: math('counting', 'one-to-one'),
-  difficulty: i < 2 ? 1 : 2,
-  params: { mode: 'tap-count', target: n, icon: ['🐠', '🦆', '🍎', '⭐'][i], img: ['fish_blue.png', null, null, 'fish_orange.png'][i], theme: ['underwater', null, null, 'underwater'][i] },
+  difficulty: i < 3 ? 1 : i < 6 ? 2 : 3,
+  params: { mode: 'tap-count', target: n, icon, img, theme },
 }));
 [3, 4, 5, 6].forEach((n, i) => acts.push({
   id: `count-subitize-${n}`, title: 'Quick Look', icon: '👀', sceneType: 'count',
@@ -189,12 +217,12 @@ acts.push(
   difficulty: 2 + (i > 1 ? 1 : 0),
   params: { mode: 'subitize', target: n },
 }));
-acts.push({
-  id: 'count-rote-30', title: 'To 30', icon: '🚀', sceneType: 'count',
-  elofTags: math('counting', 'rote-30'),
-  difficulty: 2,
-  params: { mode: 'rote', target: 30 },
-});
+[[10, '🐣', 1], [20, '🎯', 2], [30, '🚀', 2]].forEach(([n, icon, diff]) => acts.push({
+  id: `count-rote-${n}`, title: `To ${n}`, icon, sceneType: 'count',
+  elofTags: math('counting', `rote-${n}`),
+  difficulty: diff,
+  params: { mode: 'rote', target: n },
+}));
 
 // pattern
 acts.push(
@@ -202,28 +230,46 @@ acts.push(
     params: { mode: 'extend', unit: ['🔴', '🔵'], shown: 6, choices: ['🔴', '🔵'] } },
   { id: 'pattern-ab-2', title: 'Pattern', icon: '🐶', sceneType: 'pattern', elofTags: math('algebraic', 'extend-pattern'), difficulty: 2,
     params: { mode: 'extend', unit: ['🐶', '🐱'], shown: 6, choices: ['🐶', '🐱', '🐭'] } },
+  { id: 'pattern-abb-1', title: 'Pattern', icon: '🌟', sceneType: 'pattern', elofTags: math('algebraic', 'extend-pattern'), difficulty: 3,
+    params: { mode: 'extend', unit: ['🌟', '🌙', '🌙'], shown: 7, choices: ['🌟', '🌙'] } },
   { id: 'pattern-abc-1', title: 'Pattern', icon: '🍓', sceneType: 'pattern', elofTags: math('algebraic', 'extend-pattern'), difficulty: 3,
     params: { mode: 'extend', unit: ['🍓', '🍌', '🍇'], shown: 7, choices: ['🍓', '🍌', '🍇'] } },
   { id: 'pattern-dup-1', title: 'Copy It', icon: '🟡', sceneType: 'pattern', elofTags: math('algebraic', 'duplicate-pattern'), difficulty: 2,
     params: { mode: 'duplicate', unit: ['🟡', '🟢'], shown: 4, choices: ['🟡', '🟢'] } },
+  { id: 'pattern-dup-2', title: 'Copy It', icon: '🦆', sceneType: 'pattern', elofTags: math('algebraic', 'duplicate-pattern'), difficulty: 3,
+    params: { mode: 'duplicate', unit: ['🦆', '🐸'], shown: 6, choices: ['🦆', '🐸', '🐟'] } },
   { id: 'pattern-create-1', title: 'Make One', icon: '✨', sceneType: 'pattern', elofTags: math('algebraic', 'create-pattern'), difficulty: 4,
     params: { mode: 'create', unit: [], shown: 0, choices: ['🔴', '🔵', '🟡'] } },
+  { id: 'pattern-create-2', title: 'Make One', icon: '🌈', sceneType: 'pattern', elofTags: math('algebraic', 'create-pattern'), difficulty: 4,
+    params: { mode: 'create', unit: [], shown: 0, choices: ['🌸', '🦋', '⭐', '🍀'] } },
 );
 
 // phonics — ladder order enforced by rung index (§7)
 acts.push(
   { id: 'phonics-compound-1', title: 'Word+Word', icon: '🧩', sceneType: 'phonics', elofTags: lit('phonological', 'compound-words'), difficulty: 1,
     params: { rung: 'compound', items: [{ say: 'Cup. Cake. What word do they make?', word: 'cupcake', icon: '🧁', wrong: ['🐶', '🌙'] }, { say: 'Rain. Bow. What word do they make?', word: 'rainbow', icon: '🌈', wrong: ['🍎', '🚗'] }, { say: 'Star. Fish. What word do they make?', word: 'starfish', icon: '⭐', wrong: ['🐸', '🎩'] }] } },
+  { id: 'phonics-compound-2', title: 'Word+Word', icon: '🧩', sceneType: 'phonics', elofTags: lit('phonological', 'compound-words'), difficulty: 2,
+    params: { rung: 'compound', items: [{ say: 'Sun. Flower. What word do they make?', word: 'sunflower', icon: '🌻', wrong: ['🚂', '🐟'] }, { say: 'Snow. Man. What word do they make?', word: 'snowman', icon: '⛄', wrong: ['🍌', '🎈'] }, { say: 'Lady. Bug. What word do they make?', word: 'ladybug', icon: '🐞', wrong: ['🌙', '🧦'] }] } },
   { id: 'phonics-syllable-1', title: 'Clap It', icon: '👏', sceneType: 'phonics', elofTags: lit('phonological', 'syllables'), difficulty: 2,
     params: { rung: 'syllable', items: [{ say: 'Clap it with me. Ap. Ple. How many claps?', word: 'apple', syllables: 2, icon: '🍎' }, { say: 'Clap it with me. Ba. Na. Na. How many claps?', word: 'banana', syllables: 3, icon: '🍌' }, { say: 'Clap it with me. Dog. How many claps?', word: 'dog', syllables: 1, icon: '🐶' }, { say: 'Clap it with me. But. Ter. Fly. How many claps?', word: 'butterfly', syllables: 3, icon: '🦋' }] } },
+  { id: 'phonics-syllable-2', title: 'Clap It', icon: '👏', sceneType: 'phonics', elofTags: lit('phonological', 'syllables'), difficulty: 3,
+    params: { rung: 'syllable', items: [{ say: 'Clap it with me. El. E. Phant. How many claps?', word: 'elephant', syllables: 3, icon: '🐘' }, { say: 'Clap it with me. Cat. How many claps?', word: 'cat', syllables: 1, icon: '🐱' }, { say: 'Clap it with me. Mon. Key. How many claps?', word: 'monkey', syllables: 2, icon: '🐵' }, { say: 'Clap it with me. Straw. Ber. Ry. How many claps?', word: 'strawberry', syllables: 3, icon: '🍓' }] } },
   { id: 'phonics-rhyme-1', title: 'Rhymes', icon: '🎵', sceneType: 'phonics', elofTags: lit('phonological', 'rhyme'), difficulty: 2,
     params: { rung: 'rhyme', items: [{ say: 'What rhymes with cat?', word: 'cat', icon: '🐱', answer: { word: 'hat', icon: '🎩' }, wrong: [{ word: 'sun', icon: '☀️' }, { word: 'car', icon: '🚗' }] }, { say: 'What rhymes with dog?', word: 'dog', icon: '🐶', answer: { word: 'frog', icon: '🐸' }, wrong: [{ word: 'moon', icon: '🌙' }, { word: 'fish', icon: '🐟' }] }, { say: 'What rhymes with star?', word: 'star', icon: '⭐', answer: { word: 'car', icon: '🚗' }, wrong: [{ word: 'ball', icon: '⚽' }, { word: 'cake', icon: '🍰' }] }] } },
+  { id: 'phonics-rhyme-2', title: 'Rhymes', icon: '🎵', sceneType: 'phonics', elofTags: lit('phonological', 'rhyme'), difficulty: 3,
+    params: { rung: 'rhyme', items: [{ say: 'What rhymes with bee?', word: 'bee', icon: '🐝', answer: { word: 'tree', icon: '🌳' }, wrong: [{ word: 'fish', icon: '🐟' }, { word: 'car', icon: '🚗' }] }, { say: 'What rhymes with moon?', word: 'moon', icon: '🌙', answer: { word: 'spoon', icon: '🥄' }, wrong: [{ word: 'apple', icon: '🍎' }, { word: 'dog', icon: '🐶' }] }, { say: 'What rhymes with cake?', word: 'cake', icon: '🍰', answer: { word: 'snake', icon: '🐍' }, wrong: [{ word: 'sun', icon: '☀️' }, { word: 'boat', icon: '⛵' }] }] } },
   { id: 'phonics-allit-1', title: 'Same Start', icon: '🅜', sceneType: 'phonics', elofTags: lit('phonological', 'alliteration'), difficulty: 3,
     params: { rung: 'alliteration', items: [{ say: 'Which one starts with mmm, like the letter M?', answer: { word: 'moon', icon: '🌙' }, wrong: [{ word: 'sun', icon: '☀️' }, { word: 'ball', icon: '⚽' }] }, { say: 'Which one starts with sss, like the letter S?', answer: { word: 'snake', icon: '🐍' }, wrong: [{ word: 'cat', icon: '🐱' }, { word: 'tree', icon: '🌳' }] }] } },
+  { id: 'phonics-allit-2', title: 'Same Start', icon: '🅣', sceneType: 'phonics', elofTags: lit('phonological', 'alliteration'), difficulty: 4,
+    params: { rung: 'alliteration', items: [{ say: 'Which one starts with tuh, like the letter T?', answer: { word: 'turtle', icon: '🐢' }, wrong: [{ word: 'apple', icon: '🍎' }, { word: 'moon', icon: '🌙' }] }, { say: 'Which one starts with puh, like the letter P?', answer: { word: 'pig', icon: '🐷' }, wrong: [{ word: 'sun', icon: '☀️' }, { word: 'cat', icon: '🐱' }] }, { say: 'Which one starts with buh, like the letter B?', answer: { word: 'butterfly', icon: '🦋' }, wrong: [{ word: 'fish', icon: '🐟' }, { word: 'hat', icon: '🎩' }] }] } },
   { id: 'phonics-onset-1', title: 'Word Parts', icon: '🔗', sceneType: 'phonics', elofTags: lit('phonological', 'onset-rime'), difficulty: 4,
     params: { rung: 'onset-rime', items: [{ say: 'Kuh. At. What word?', scaffold: ['c', 'at'], word: 'cat', icon: '🐱', wrong: ['🐶', '☀️'] }, { say: 'Duh. Og. What word?', scaffold: ['d', 'og'], word: 'dog', icon: '🐶', wrong: ['🎩', '🌙'] }] } },
+  { id: 'phonics-onset-2', title: 'Word Parts', icon: '🔗', sceneType: 'phonics', elofTags: lit('phonological', 'onset-rime'), difficulty: 4,
+    params: { rung: 'onset-rime', items: [{ say: 'Huh. At. What word?', scaffold: ['h', 'at'], word: 'hat', icon: '🎩', wrong: ['🐱', '🚗'] }, { say: 'Sss. Un. What word?', scaffold: ['s', 'un'], word: 'sun', icon: '☀️', wrong: ['🌙', '🐟'] }] } },
   { id: 'phonics-phoneme-1', title: 'Blend It', icon: '🎶', sceneType: 'phonics', elofTags: lit('phonological', 'phoneme-blend'), difficulty: 5,
     params: { rung: 'phoneme', items: [{ say: 'Sss. Uh. Nnn. What word?', scaffold: ['s', 'u', 'n'], word: 'sun', icon: '☀️', wrong: ['🌙', '🐟'] }, { say: 'Kuh. Ah. Tuh. What word?', scaffold: ['c', 'a', 't'], word: 'cat', icon: '🐱', wrong: ['🐸', '🚗'] }] } },
+  { id: 'phonics-phoneme-2', title: 'Blend It', icon: '🎶', sceneType: 'phonics', elofTags: lit('phonological', 'phoneme-blend'), difficulty: 5,
+    params: { rung: 'phoneme', items: [{ say: 'Buh. Uh. Sss. What word?', scaffold: ['b', 'u', 's'], word: 'bus', icon: '🚌', wrong: ['🚗', '🐱'] }, { say: 'Puh. Ih. Guh. What word?', scaffold: ['p', 'i', 'g'], word: 'pig', icon: '🐷', wrong: ['🐶', '⭐'] }] } },
 );
 
 // shape
@@ -232,57 +278,178 @@ acts.push(
     params: { rounds: [{ name: 'circle', kind: 'circle' }, { name: 'square', kind: 'square' }, { name: 'triangle', kind: 'triangle' }] } },
   { id: 'shape-2d-2', title: 'Shapes', icon: '⭐', sceneType: 'shape', elofTags: math('geometry', 'name-2d'), difficulty: 2,
     params: { rounds: [{ name: 'rectangle', kind: 'rectangle' }, { name: 'star', kind: 'star' }, { name: 'heart', kind: 'heart' }, { name: 'oval', kind: 'oval' }] } },
+  { id: 'shape-2d-3', title: 'Shapes', icon: '💚', sceneType: 'shape', elofTags: math('geometry', 'name-2d'), difficulty: 3,
+    params: { rounds: [{ name: 'oval', kind: 'oval' }, { name: 'triangle', kind: 'triangle' }, { name: 'star', kind: 'star' }, { name: 'rectangle', kind: 'rectangle' }, { name: 'heart', kind: 'heart' }] } },
   { id: 'shape-3d-1', title: 'Solids', icon: '⚽', sceneType: 'shape', elofTags: math('geometry', 'name-3d'), difficulty: 3,
     params: { rounds: [{ name: 'sphere', kind: 'sphere' }, { name: 'cube', kind: 'cube' }] } },
+  { id: 'shape-3d-2', title: 'Solids', icon: '🎲', sceneType: 'shape', elofTags: math('geometry', 'name-3d'), difficulty: 4,
+    params: { rounds: [{ name: 'cube', kind: 'cube' }, { name: 'sphere', kind: 'sphere' }, { name: 'circle', kind: 'circle' }] } },
 );
 
 // ---- GAMES ----
-// pop: balloons float up; pop the ones with the target letter/number
-const popDefs = [
+// pop: balloons float up; pop 3 with the target letter/number (short + sweet)
+const POP_NEED = 3;
+const popLetters = [
   ['M', ['S', 'O', 'T']], ['A', ['M', 'E', 'B']], ['E', ['F', 'L', 'A']], ['S', ['M', 'C', 'O']],
+  ['L', ['I', 'T', 'E']], ['I', ['L', 'J', 'T']], ['T', ['I', 'F', 'L']], ['O', ['Q', 'C', 'G']],
+  ['P', ['B', 'R', 'D']], ['C', ['O', 'G', 'S']], ['N', ['M', 'W', 'Z']], ['B', ['D', 'P', 'R']], ['D', ['B', 'O', 'P']],
 ];
-popDefs.forEach(([target, decoys], i) => acts.push({
+popLetters.forEach(([target, decoys], i) => acts.push({
   id: `pop-letter-${target}`, title: `Pop ${target}`, icon: '🎈', sceneType: 'pop',
   elofTags: lit('print-alphabet', 'letter-recognition'),
-  difficulty: i < 2 ? 1 : 2,
-  params: { kind: 'letter', target, decoys, need: 4, say: `Pop the balloons with the letter ${target}!` },
+  difficulty: i < 4 ? 1 : i < 9 ? 2 : 3,
+  params: { kind: 'letter', target, decoys, need: POP_NEED, say: `Pop the balloons with the letter ${target}!` },
 }));
-[[3, [1, 5, 8]], [5, [2, 3, 9]]].forEach(([target, decoys], i) => acts.push({
+const popNumbers = [[1, [7, 4, 2]], [2, [5, 3, 7]], [3, [1, 5, 8]], [4, [6, 9, 1]], [5, [2, 3, 9]]];
+popNumbers.forEach(([target, decoys], i) => acts.push({
   id: `pop-number-${target}`, title: `Pop ${target}`, icon: '🎈', sceneType: 'pop',
   elofTags: math('counting', 'numeral-recognition'),
-  difficulty: 1 + i,
-  params: { kind: 'number', target: String(target), decoys: decoys.map(String), need: 4, say: `Pop the balloons with the number ${target}!` },
+  difficulty: i < 2 ? 1 : 2,
+  params: { kind: 'number', target: String(target), decoys: decoys.map(String), need: POP_NEED, say: `Pop the balloons with the number ${target}!` },
 }));
-// feed: drag the right thing to a hungry animal
+
+// fish: fish swim by; catch 3 carrying the target letter/number
+const fishLetters = [
+  ['F', ['E', 'T', 'H']], ['G', ['C', 'O', 'Q']], ['H', ['N', 'M', 'A']],
+  ['J', ['I', 'L', 'U']], ['K', ['X', 'H', 'R']], ['R', ['P', 'B', 'K']],
+];
+fishLetters.forEach(([target, decoys], i) => acts.push({
+  id: `fish-letter-${target}`, title: `Catch ${target}`, icon: '🐠', sceneType: 'fish',
+  elofTags: lit('print-alphabet', 'letter-recognition'),
+  difficulty: i < 3 ? 2 : 3,
+  params: { kind: 'letter', target, decoys, need: 3, say: `Catch the fish with the letter ${target}!` },
+}));
+const fishNumbers = [[6, [9, 8, 5]], [7, [1, 4, 2]]];
+fishNumbers.forEach(([target, decoys], i) => acts.push({
+  id: `fish-number-${target}`, title: `Catch ${target}`, icon: '🐠', sceneType: 'fish',
+  elofTags: math('counting', 'numeral-recognition'),
+  difficulty: 2 + i,
+  params: { kind: 'number', target: String(target), decoys: decoys.map(String), need: 3, say: `Catch the fish with the number ${target}!` },
+}));
+
+// hide: animal friends peek out holding letter cards; tap the right friend
+const hideLetters = [
+  ['Q', ['O', 'G', 'C']], ['U', ['V', 'N', 'W']], ['V', ['W', 'U', 'Y']], ['W', ['M', 'V', 'N']],
+  ['X', ['K', 'Y', 'Z']], ['Y', ['X', 'V', 'T']], ['Z', ['N', 'S', 'X']],
+];
+hideLetters.forEach(([target, decoys], i) => acts.push({
+  id: `hide-letter-${target}`, title: `Peek ${target}`, icon: '🙈', sceneType: 'hide',
+  elofTags: lit('print-alphabet', 'letter-recognition'),
+  difficulty: i < 4 ? 2 : 3,
+  params: { kind: 'letter', target, decoys, need: 3, say: `Tap the friend holding the letter ${target}!` },
+}));
+const hideNumbers = [[8, [3, 6, 9]], [9, [6, 4, 7]]];
+hideNumbers.forEach(([target, decoys], i) => acts.push({
+  id: `hide-number-${target}`, title: `Peek ${target}`, icon: '🙈', sceneType: 'hide',
+  elofTags: math('counting', 'numeral-recognition'),
+  difficulty: 2 + i,
+  params: { kind: 'number', target: String(target), decoys: decoys.map(String), need: 3, say: `Tap the friend holding the number ${target}!` },
+}));
+
+// memory: flip two cards, find the pairs
+const mem = (id, diff, tags, pairs) => ({
+  id, title: 'Memory', icon: '🃏', sceneType: 'memory', elofTags: tags, difficulty: diff, params: { pairs },
+});
 acts.push(
-  { id: 'feed-monkey', title: 'Feed Momo', icon: '🐵', sceneType: 'feed',
-    elofTags: { domain: 'language', subDomain: 'vocabulary', goal: 'word-picture' }, difficulty: 1,
-    params: { animal: 'animal_monkey.png', name: 'Momo', rounds: [
-      { say: 'Momo the monkey wants the banana!', answer: { icon: '🍌' }, wrong: [{ icon: '🚗' }, { icon: '🎩' }] },
-      { say: 'Momo the monkey wants the ball!', answer: { icon: '⚽' }, wrong: [{ icon: '🍎' }, { icon: '🌙' }] },
-      { say: 'Momo the monkey wants the strawberry!', answer: { icon: '🍓' }, wrong: [{ icon: '🧦' }, { icon: '🚂' }] },
-    ] } },
-  { id: 'feed-panda', title: 'Feed Pip', icon: '🐼', sceneType: 'feed',
-    elofTags: lit('phonological', 'initial-sound'), difficulty: 2,
-    params: { animal: 'animal_panda.png', name: 'Pip', rounds: [
-      { say: 'Pip the panda wants something that starts with mmm!', answer: { icon: '🌙', word: 'moon' }, wrong: [{ icon: '☀️' }, { icon: '🚗' }] },
-      { say: 'Pip the panda wants something that starts with sss!', answer: { icon: '🧦', word: 'sock' }, wrong: [{ icon: '🍌' }, { icon: '🎩' }] },
-      { say: 'Pip the panda wants something that starts with buh!', answer: { icon: '⚽', word: 'ball' }, wrong: [{ icon: '🌙' }, { icon: '🍓' }] },
-    ] } },
-  { id: 'feed-elephant', title: 'Feed Ellie', icon: '🐘', sceneType: 'feed',
-    elofTags: math('counting', 'quantity'), difficulty: 2,
-    params: { animal: 'animal_elephant.png', name: 'Ellie', rounds: [
-      { say: 'Ellie the elephant wants two apples!', answer: { icon: '🍎🍎' }, wrong: [{ icon: '🍎' }, { icon: '🍎🍎🍎' }] },
-      { say: 'Ellie the elephant wants three cookies!', answer: { icon: '🍪🍪🍪' }, wrong: [{ icon: '🍪' }, { icon: '🍪🍪' }] },
-      { say: 'Ellie the elephant wants one cake!', answer: { icon: '🍰' }, wrong: [{ icon: '🍰🍰' }, { icon: '🍰🍰🍰' }] },
-    ] } },
-  { id: 'feed-rabbit', title: 'Feed Rosie', icon: '🐰', sceneType: 'feed',
-    elofTags: math('measurement', 'color-id'), difficulty: 1,
-    params: { animal: 'animal_rabbit.png', name: 'Rosie', rounds: [
-      { say: 'Rosie the rabbit wants something red!', answer: { icon: '🍓', word: 'red' }, wrong: [{ icon: '🫐' }, { icon: '🍌' }] },
-      { say: 'Rosie the rabbit wants something yellow!', answer: { icon: '🍌', word: 'yellow' }, wrong: [{ icon: '🍎' }, { icon: '🥦' }] },
-      { say: 'Rosie the rabbit wants something green!', answer: { icon: '🥦', word: 'green' }, wrong: [{ icon: '🍓' }, { icon: '🫐' }] },
-    ] } },
+  mem('memory-animals-1', 1, { domain: 'cognition', subDomain: 'memory', goal: 'matching' }, [['🐶', '🐶'], ['🐱', '🐱'], ['🐰', '🐰']]),
+  mem('memory-fruit-1', 1, { domain: 'cognition', subDomain: 'memory', goal: 'matching' }, [['🍎', '🍎'], ['🍌', '🍌'], ['🍇', '🍇']]),
+  mem('memory-letters-1', 2, lit('print-alphabet', 'upper-lower'), [['M', 'm'], ['A', 'a'], ['S', 's']]),
+  mem('memory-numbers-1', 2, math('counting', 'numeral-quantity'), [['1', '🔵'], ['2', '🔵🔵'], ['3', '🔵🔵🔵']]),
+  mem('memory-sea-1', 2, { domain: 'cognition', subDomain: 'memory', goal: 'matching' }, [['🐠', '🐠'], ['🐙', '🐙'], ['🦀', '🦀'], ['🐳', '🐳']]),
+  mem('memory-space-1', 3, { domain: 'cognition', subDomain: 'memory', goal: 'matching' }, [['🚀', '🚀'], ['🌙', '🌙'], ['⭐', '⭐'], ['🪐', '🪐']]),
+);
+
+// feed: drag the right thing to a hungry animal — all ten friends, return visits
+const feed = (id, title, icon, tags, diff, animal, name, rounds) => ({
+  id, title, icon, sceneType: 'feed', elofTags: tags, difficulty: diff,
+  params: { animal, name, rounds },
+});
+const fr = (say, answer, w1, w2) => ({ say, answer, wrong: [{ icon: w1 }, { icon: w2 }] });
+acts.push(
+  feed('feed-monkey', 'Feed Momo', '🐵', { domain: 'language', subDomain: 'vocabulary', goal: 'word-picture' }, 1, 'animal_monkey.png', 'Momo', [
+    fr('Momo the monkey wants the banana!', { icon: '🍌' }, '🚗', '🎩'),
+    fr('Momo the monkey wants the ball!', { icon: '⚽' }, '🍎', '🌙'),
+    fr('Momo the monkey wants the strawberry!', { icon: '🍓' }, '🧦', '🚂'),
+    fr('Momo the monkey wants the book!', { icon: '📖' }, '🍪', '🐟'),
+  ]),
+  feed('feed-rabbit', 'Feed Rosie', '🐰', math('measurement', 'color-id'), 1, 'animal_rabbit.png', 'Rosie', [
+    fr('Rosie the rabbit wants something red!', { icon: '🍓', word: 'red' }, '🫐', '🍌'),
+    fr('Rosie the rabbit wants something yellow!', { icon: '🍌', word: 'yellow' }, '🍎', '🥦'),
+    fr('Rosie the rabbit wants something green!', { icon: '🥦', word: 'green' }, '🍓', '🫐'),
+    fr('Rosie the rabbit wants something orange!', { icon: '🥕', word: 'orange' }, '🍇', '🫐'),
+  ]),
+  feed('feed-elephant', 'Feed Ellie', '🐘', math('counting', 'quantity'), 2, 'animal_elephant.png', 'Ellie', [
+    fr('Ellie the elephant wants two apples!', { icon: '🍎🍎' }, '🍎', '🍎🍎🍎'),
+    fr('Ellie the elephant wants three cookies!', { icon: '🍪🍪🍪' }, '🍪', '🍪🍪'),
+    fr('Ellie the elephant wants one cake!', { icon: '🍰' }, '🍰🍰', '🍰🍰🍰'),
+    fr('Ellie the elephant wants four carrots!', { icon: '🥕🥕🥕🥕' }, '🥕🥕', '🥕🥕🥕'),
+  ]),
+  feed('feed-panda', 'Feed Pip', '🐼', lit('phonological', 'initial-sound'), 2, 'animal_panda.png', 'Pip', [
+    fr('Pip the panda wants something that starts with mmm!', { icon: '🌙', word: 'moon' }, '☀️', '🚗'),
+    fr('Pip the panda wants something that starts with sss!', { icon: '🧦', word: 'sock' }, '🍌', '🎩'),
+    fr('Pip the panda wants something that starts with buh!', { icon: '⚽', word: 'ball' }, '🌙', '🍓'),
+    fr('Pip the panda wants something that starts with ah!', { icon: '🍎', word: 'apple' }, '🧦', '🌙'),
+  ]),
+  feed('feed-hippo', 'Feed Harry', '🦛', { domain: 'language', subDomain: 'vocabulary', goal: 'word-picture' }, 1, 'animal_hippo.png', 'Harry', [
+    fr('Harry the hippo wants the watermelon!', { icon: '🍉' }, '🧢', '🚗'),
+    fr('Harry the hippo wants the corn!', { icon: '🌽' }, '🧸', '🌂'),
+    fr('Harry the hippo wants the pizza!', { icon: '🍕' }, '🎈', '🧦'),
+    fr('Harry the hippo wants the grapes!', { icon: '🍇' }, '👟', '🚁'),
+  ]),
+  feed('feed-giraffe', 'Feed Gigi', '🦒', math('measurement', 'color-id'), 2, 'animal_giraffe.png', 'Gigi', [
+    fr('Gigi the giraffe wants something purple!', { icon: '🍇', word: 'purple' }, '🍌', '🍓'),
+    fr('Gigi the giraffe wants something blue!', { icon: '🫐', word: 'blue' }, '🥕', '🍋'),
+    fr('Gigi the giraffe wants something orange!', { icon: '🥕', word: 'orange' }, '🫐', '🥦'),
+    fr('Gigi the giraffe wants something brown!', { icon: '🍪', word: 'brown' }, '🍓', '🍋'),
+  ]),
+  feed('feed-penguin', 'Feed Penny', '🐧', math('counting', 'quantity'), 2, 'animal_penguin.png', 'Penny', [
+    fr('Penny the penguin wants one fish!', { icon: '🐟' }, '🐟🐟', '🐟🐟🐟'),
+    fr('Penny the penguin wants three fish!', { icon: '🐟🐟🐟' }, '🐟', '🐟🐟'),
+    fr('Penny the penguin wants two ice creams!', { icon: '🍦🍦' }, '🍦', '🍦🍦🍦'),
+    fr('Penny the penguin wants four donuts!', { icon: '🍩🍩🍩🍩' }, '🍩🍩', '🍩🍩🍩'),
+  ]),
+  feed('feed-pig', 'Feed Rosa', '🐷', { domain: 'language', subDomain: 'vocabulary', goal: 'word-picture' }, 1, 'animal_pig.png', 'Rosa', [
+    fr('Rosa the pig wants the apple!', { icon: '🍎' }, '🚙', '🎺'),
+    fr('Rosa the pig wants the corn!', { icon: '🌽' }, '🧦', '🎩'),
+    fr('Rosa the pig wants the cupcake!', { icon: '🧁' }, '🚂', '🌂'),
+    fr('Rosa the pig wants the sandwich!', { icon: '🥪' }, '🎈', '👟'),
+  ]),
+  feed('feed-parrot', 'Feed Coco', '🦜', lit('phonological', 'initial-sound'), 3, 'animal_parrot.png', 'Coco', [
+    fr('Coco the parrot wants something that starts with kuh!', { icon: '🍪', word: 'cookie' }, '🍌', '🍕'),
+    fr('Coco the parrot wants something that starts with tuh!', { icon: '🌮', word: 'taco' }, '🍇', '🍦'),
+    fr('Coco the parrot wants something that starts with puh!', { icon: '🍕', word: 'pizza' }, '🌮', '🍪'),
+    fr('Coco the parrot wants something that starts with guh!', { icon: '🍇', word: 'grapes' }, '🍰', '🌽'),
+  ]),
+  feed('feed-snake', 'Feed Sunny', '🐍', math('geometry', 'shape-id'), 2, 'animal_snake.png', 'Sunny', [
+    fr('Sunny the snake wants the round cookie!', { icon: '🍪', word: 'round' }, '🌽', '🍕'),
+    fr('Sunny the snake wants something long, like him! The corn!', { icon: '🌽', word: 'long' }, '🍪', '🧀'),
+    fr('Sunny the snake wants the triangle pizza!', { icon: '🍕', word: 'triangle' }, '🍩', '🍞'),
+    fr('Sunny the snake wants the square waffle!', { icon: '🧇', word: 'square' }, '🍪', '🌽'),
+  ]),
+  feed('feed-monkey-2', 'Momo Again', '🐵', { domain: 'language', subDomain: 'vocabulary', goal: 'word-picture' }, 2, 'animal_monkey.png', 'Momo', [
+    fr('Momo the monkey wants the kiwi!', { icon: '🥝' }, '🍒', '🥨'),
+    fr('Momo the monkey wants the cherry!', { icon: '🍒' }, '🥝', '🌮'),
+    fr('Momo the monkey wants the pretzel!', { icon: '🥨' }, '🍒', '🥝'),
+    fr('Momo the monkey wants the taco!', { icon: '🌮' }, '🥨', '🍒'),
+  ]),
+  feed('feed-rabbit-2', 'Rosie Again', '🐰', math('measurement', 'color-id'), 2, 'animal_rabbit.png', 'Rosie', [
+    fr('Rosie the rabbit wants something pink!', { icon: '🍑', word: 'pink' }, '🥦', '🫐'),
+    fr('Rosie the rabbit wants something purple!', { icon: '🍆', word: 'purple' }, '🍌', '🥕'),
+    fr('Rosie the rabbit wants something white!', { icon: '🥛', word: 'white' }, '🍓', '🥦'),
+    fr('Rosie the rabbit wants something blue!', { icon: '🫐', word: 'blue' }, '🍑', '🍆'),
+  ]),
+  feed('feed-elephant-2', 'Ellie Again', '🐘', math('counting', 'quantity'), 3, 'animal_elephant.png', 'Ellie', [
+    fr('Ellie the elephant wants five blueberries!', { icon: '🫐🫐🫐🫐🫐' }, '🫐🫐🫐', '🫐🫐🫐🫐'),
+    fr('Ellie the elephant wants two bananas!', { icon: '🍌🍌' }, '🍌', '🍌🍌🍌'),
+    fr('Ellie the elephant wants four strawberries!', { icon: '🍓🍓🍓🍓' }, '🍓🍓', '🍓🍓🍓'),
+    fr('Ellie the elephant wants three donuts!', { icon: '🍩🍩🍩' }, '🍩', '🍩🍩'),
+  ]),
+  feed('feed-panda-2', 'Pip Again', '🐼', lit('phonological', 'initial-sound'), 3, 'animal_panda.png', 'Pip', [
+    fr('Pip the panda wants something that starts with tuh!', { icon: '🌮', word: 'taco' }, '🍋', '🐟'),
+    fr('Pip the panda wants something that starts with lll!', { icon: '🍋', word: 'lemon' }, '🌮', '🍩'),
+    fr('Pip the panda wants something that starts with fff!', { icon: '🐟', word: 'fish' }, '🍋', '🌮'),
+    fr('Pip the panda wants something that starts with duh!', { icon: '🍩', word: 'donut' }, '🐟', '🍋'),
+  ]),
 );
 
 // freedraw — no scoring, no completion (§7)
@@ -295,7 +462,7 @@ acts.push({
 
 // ---- per-activity spoken instruction (played by the pre-activity overlay) ----
 const INSTRUCTIONS = {
-  trace: 'Use your finger to trace! Start at the green dot and follow the little red dot.',
+  trace: 'First trace with the dot, then draw it all by yourself!',
   match: 'Tap two cards that go together!',
   sort: 'Drag each one into its box!',
   count: 'Tap each one and count with me!',
@@ -305,12 +472,15 @@ const INSTRUCTIONS = {
   freedraw: 'Draw anything you like! Tap a color to change your crayon.',
   pop: 'Pop the balloons I say! Ready?',
   feed: 'Oh no, someone is hungry! Drag the right food to their mouth!',
+  fish: 'Catch the fish I say! Tap them quick!',
+  memory: 'Flip two cards and find the pairs!',
+  hide: 'Someone is hiding! Tap the friend I say!',
 };
 for (const a of acts) {
   if (a.sceneType === 'count') {
     const m = a.params.mode;
     a.instruction = m === 'subitize' ? 'Look quick, then tap how many you saw!'
-      : m === 'rote' ? 'Tap the glowing numbers and count all the way to thirty!'
+      : m === 'rote' ? `Tap the glowing numbers and count all the way to ${a.params.target}!`
       : INSTRUCTIONS.count;
   } else if (a.sceneType === 'pattern') {
     const m = a.params.mode;
@@ -321,17 +491,68 @@ for (const a of acts) {
 }
 
 // ---- structured learning path (ABCmouse-style ordered curriculum) ----
-const path = [
-  'trace-UM', 'pop-letter-M', 'count-tap-3', 'trace-UA', 'match-sound-1',
-  'sort-color-1', 'trace-N1', 'feed-rabbit', 'pattern-ab-1', 'trace-UE',
-  'count-tap-5', 'shape-2d-1', 'pop-letter-A', 'trace-UL', 'phonics-compound-1',
-  'match-qty-1', 'trace-UI', 'feed-monkey', 'count-subitize-3', 'sort-size-1',
-  'trace-US', 'phonics-syllable-1', 'pop-number-3', 'pattern-dup-1', 'match-case-1',
-  'feed-elephant', 'trace-UT', 'count-rote-30', 'feed-panda', 'trace-name',
+// Fair-merge: walk every queue in its own order, always taking from the queue
+// that is proportionally furthest behind. Keeps each strand's ramp intact
+// while weaving trace / skill / game levels evenly through the whole path.
+function weave(...qs) {
+  const out = [];
+  const idx = qs.map(() => 0);
+  const total = qs.reduce((sum, q) => sum + q.length, 0);
+  for (let k = 0; k < total; k++) {
+    let best = -1, bestP = Infinity;
+    qs.forEach((q, i) => {
+      if (idx[i] < q.length) {
+        const p = (idx[i] + 0.5) / q.length;
+        if (p < bestP) { bestP = p; best = i; }
+      }
+    });
+    out.push(qs[best][idx[best]++]);
+  }
+  return out;
+}
+const ids_ = (pred) => acts.filter(pred).map((a) => a.id);
+
+const traceQ = [
+  ...weave(
+    LETTER_ORDER.map((L) => `trace-U${L}`),
+    NUMBER_ORDER.map((n) => `trace-N${n}`),
+  ),
+  'trace-name',
+  ...WORDS.map((w) => `trace-word-${w}`),
 ];
+const skillQ = weave(
+  ids_((a) => a.sceneType === 'match'),
+  ids_((a) => a.sceneType === 'count'),
+  ids_((a) => a.sceneType === 'pattern'),
+  ids_((a) => a.sceneType === 'phonics'),
+  ids_((a) => a.sceneType === 'sort'),
+  ids_((a) => a.sceneType === 'shape'),
+);
+// Letter/number recognition games follow the teaching order, so "find Q"
+// never shows up before Q has been introduced on the path.
+const letterGames = [
+  ...popLetters.map(([t]) => [t, `pop-letter-${t}`]),
+  ...fishLetters.map(([t]) => [t, `fish-letter-${t}`]),
+  ...hideLetters.map(([t]) => [t, `hide-letter-${t}`]),
+].sort((a, b) => LETTER_ORDER.indexOf(a[0]) - LETTER_ORDER.indexOf(b[0])).map(([, id]) => id);
+const numberGames = [
+  ...popNumbers.map(([t]) => [t, `pop-number-${t}`]),
+  ...fishNumbers.map(([t]) => [t, `fish-number-${t}`]),
+  ...hideNumbers.map(([t]) => [t, `hide-number-${t}`]),
+].sort((a, b) => a[0] - b[0]).map(([, id]) => id);
+const gameQ = weave(
+  weave(letterGames, numberGames),
+  ids_((a) => a.sceneType === 'feed'),
+  ids_((a) => a.sceneType === 'memory'),
+);
+const path = weave(traceQ, skillQ, gameQ);
+
 const ids = new Set(acts.map((a) => a.id));
+if (ids.size !== acts.length) throw new Error('duplicate activity ids');
 const missing = path.filter((id) => !ids.has(id));
 if (missing.length) throw new Error(`path references unknown activities: ${missing}`);
+if (new Set(path).size !== path.length) throw new Error('duplicate path entries');
+if (path.length < 150) throw new Error(`path too short: ${path.length}`);
 
 mkdirSync('public/content', { recursive: true });
 writeFileSync('public/content/glyphs.json', JSON.stringify(glyphs));

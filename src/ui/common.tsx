@@ -2,7 +2,7 @@
 // 88-logical-unit minimum touch target (BLUEPRINT §9) holds at every scale.
 
 import React, { useEffect, useRef, useState } from 'react';
-import { playSfx } from '../core/audio';
+import { playSfx, speak } from '../core/audio';
 import { burstAtElement } from './juice';
 
 /** Rainbow palette for single-character (letter/number) card faces. */
@@ -132,6 +132,8 @@ export function Celebration(props: { icon: string; onDone: () => void }) {
   );
   useEffect(() => {
     playSfx('great');
+    const PRAISE = ['You did it!', 'Amazing!', 'Great job!', 'Hooray! Wonderful!', 'Way to go!'];
+    speak(PRAISE[Math.floor(Math.random() * PRAISE.length)]);
     const t1 = setTimeout(() => setPhase(1), 100);
     const t2 = setTimeout(props.onDone, 2300);
     return () => { clearTimeout(t1); clearTimeout(t2); };
